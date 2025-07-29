@@ -8,11 +8,11 @@ import Navigation from '@/components/Navigation'
 import { useUser } from '@/contexts/UserContext'
 import styles from './landing.module.css'
 
-// Real social proof - update with actual numbers as you grow
-const SOCIAL_PROOF = {
-  contractsAnalyzed: 127,
-  moneySaved: 45000,
-  timesSaved: 380
+// Value propositions instead of fake numbers
+const VALUE_PROPS = {
+  analysisTime: "30 seconds",
+  accuracy: "AI-powered",
+  savings: "Thousands"
 }
 
 function LandingPageContent() {
@@ -84,25 +84,25 @@ function LandingPageContent() {
             </Link>
           </div>
 
-          {/* Social Proof */}
+          {/* Value Propositions */}
           <div className={styles.socialProof}>
             <div className={styles.statCard}>
               <div className={styles.statNumber}>
-                {SOCIAL_PROOF.contractsAnalyzed}+
+                {VALUE_PROPS.analysisTime}
               </div>
-              <div className={styles.statLabel}>Contracts Analyzed</div>
+              <div className={styles.statLabel}>Analysis Time</div>
             </div>
             <div className={styles.statCard}>
               <div className={styles.statNumber}>
-                ${SOCIAL_PROOF.moneySaved.toLocaleString()}+
+                {VALUE_PROPS.accuracy}
               </div>
-              <div className={styles.statLabel}>Saved in Legal Fees</div>
+              <div className={styles.statLabel}>Risk Detection</div>
             </div>
             <div className={styles.statCard}>
               <div className={styles.statNumber}>
-                {SOCIAL_PROOF.timesSaved}h+
+                Save {VALUE_PROPS.savings}
               </div>
-              <div className={styles.statLabel}>Time Saved</div>
+              <div className={styles.statLabel}>In Legal Fees</div>
             </div>
           </div>
         </div>
