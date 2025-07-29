@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowRight, Shield, DollarSign, FileSearch, Sparkles } from 'lucide-react'
@@ -219,7 +219,9 @@ function LandingPageContent() {
 export default function LandingPage() {
   return (
     <div className={styles.container}>
-      <LandingPageContent />
+      <Suspense fallback={<div>Loading...</div>}>
+        <LandingPageContent />
+      </Suspense>
     </div>
   )
 }

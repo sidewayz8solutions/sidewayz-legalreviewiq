@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import OpenAI from 'openai'
-import pdfParse from 'pdf-parse'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!
@@ -31,11 +30,13 @@ export async function POST(request: NextRequest) {
     let extractedText = ''
 
     if (file.type === 'application/pdf') {
+      // Dynamic import to avoid build-time issues
+      const pdfParse = (await import('pdf-parse')).default
       const pdfData = await pdfParse(buffer)
       extractedText = pdfData.text
     } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-      // Handle Word documents
-      const mammoth = require('mammoth')
+      // Handle Word documents - also use dynamic import
+      const mammoth = await import('mammoth')
       const result = await mammoth.extractRawText({ buffer })
       extractedText = result.value
     } else {
