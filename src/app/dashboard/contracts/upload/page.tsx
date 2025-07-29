@@ -92,7 +92,7 @@ export default function UploadContract() {
     <div className={styles.container}>
       <Link href="/" className={styles.backButton}>
         <ArrowLeft size={20} />
-        Back to Legal Review IQ
+        Back to Law Review IQ
       </Link>
 
       <div className={styles.content}>

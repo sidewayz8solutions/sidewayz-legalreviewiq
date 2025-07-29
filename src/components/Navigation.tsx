@@ -42,7 +42,7 @@ export default function Navigation({ className }: NavigationProps) {
       <div className={styles.navContent}>
         <Link href="/" className={styles.logo}>
           <Sparkles size={24} />
-          Legal Review IQ
+          Law Review IQ
         </Link>
         <div className={styles.navLinks}>
           <Link href="/#features" className={styles.navLink}>✨ Features</Link>

@@ -178,7 +178,7 @@ function LandingPageContent() {
             <div className={styles.footerSection}>
               <div className={`${styles.logo} ${styles.footerLogo}`}>
                 <Sparkles size={24} />
-                Legal Review IQ
+                Law Review IQ
               </div>
               <p className={styles.footerDescription}>
                 AI-powered contract analysis that helps businesses understand legal documents, identify risks, and make informed decisions in seconds.
@@ -200,14 +200,14 @@ function LandingPageContent() {
               <h3 className={styles.footerTitle}>Support</h3>
               <div className={styles.footerLinks}>
                 <Link href="/contact" className={styles.footerLink}>Contact Support</Link>
-                <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Email Us</a>
+                <a href="mailto:support@lawreviewiq.com" className={styles.footerLink}>Email Us</a>
               </div>
             </div>
           </div>
 
           <div className={styles.footerBottom}>
             <div className={styles.footerCopyright}>
-              © 2024 Legal Review IQ. All rights reserved.
+              © 2024 Law Review IQ. All rights reserved.
             </div>
           </div>
         </div>

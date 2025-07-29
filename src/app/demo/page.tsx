@@ -12,7 +12,7 @@ export default function DemoPage() {
         <div className={styles.navContent}>
           <Link href="/" className={styles.logo}>
             <Sparkles size={24} />
-            Legal Review IQ
+            Law Review IQ
           </Link>
           <div className={styles.navLinks}>
             <Link href="/#features" className={styles.navLink}>✨ Features</Link>
@@ -39,7 +39,7 @@ export default function DemoPage() {
           </div>
           <h1 className={styles.title}>Sample Contract Analysis</h1>
           <p className={styles.subtitle}>
-            See how Legal Review IQ analyzes a typical service agreement
+            See how Law Review IQ analyzes a typical service agreement
           </p>
         </div>
 

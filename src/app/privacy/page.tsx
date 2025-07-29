@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
         <div className={styles.navContent}>
           <Link href="/" className={styles.logo}>
             <Sparkles size={24} />
-            Legal Review IQ
+            Law Review IQ
           </Link>
           <div className={styles.navLinks}>
             <Link href="/#features" className={styles.navLink}>Features</Link>
@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Our Commitment to Privacy</h2>
             <p className={styles.paragraph}>
-              At Legal Review IQ, we understand that your contracts contain sensitive and confidential information. This Privacy Policy explains how we collect, use, protect, and handle your personal information and documents when you use our AI-powered contract analysis service.
+              At Law Review IQ, we understand that your contracts contain sensitive and confidential information. This Privacy Policy explains how we collect, use, protect, and handle your personal information and documents when you use our AI-powered contract analysis service.
             </p>
           </section>
 
@@ -153,14 +153,14 @@ export default function PrivacyPolicyPage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Changes to This Policy</h2>
             <p className={styles.paragraph}>
-              We may update this Privacy Policy from time to time. We will notify you of any material changes by email or through our service. Your continued use of Legal Review IQ after such modifications constitutes acceptance of the updated Privacy Policy.
+              We may update this Privacy Policy from time to time. We will notify you of any material changes by email or through our service. Your continued use of Law Review IQ after such modifications constitutes acceptance of the updated Privacy Policy.
             </p>
           </section>
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Contact Us</h2>
             <p className={styles.paragraph}>
-              If you have any questions about this Privacy Policy or our data practices, please contact us at privacy@legalreviewiq.com or through our support system.
+              If you have any questions about this Privacy Policy or our data practices, please contact us at privacy@lawreviewiq.com or through our support system.
             </p>
           </section>
         </div>
@@ -171,7 +171,7 @@ export default function PrivacyPolicyPage() {
         <div className={styles.footerContent}>
           <div className={styles.logo}>
             <Sparkles size={24} />
-            Legal Review IQ
+            Law Review IQ
           </div>
           <p className={styles.footerText}>
             AI-powered contract analysis for modern businesses
@@ -181,7 +181,7 @@ export default function PrivacyPolicyPage() {
             <Link href="/privacy" className={styles.footerLink}>Privacy Policy</Link>
           </div>
           <div className={styles.footerCopyright}>
-            © 2024 Legal Review IQ. All rights reserved.
+            © 2024 Law Review IQ. All rights reserved.
           </div>
         </div>
       </footer>

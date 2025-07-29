@@ -16,7 +16,7 @@ export default function HowItWorksPage() {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
-            How Legal Review IQ Works
+            How Law Review IQ Works
           </h1>
           <p className={styles.heroSubtitle}>
             Three simple steps to understand any contract and protect your business from hidden risks
@@ -109,7 +109,7 @@ export default function HowItWorksPage() {
 
       {/* Benefits Section */}
       <section className={styles.benefitsSection}>
-        <h2 className={styles.sectionTitle}>Why Choose Legal Review IQ?</h2>
+        <h2 className={styles.sectionTitle}>Why Choose Law Review IQ?</h2>
         <div className={styles.benefitsGrid}>
           <div className={styles.benefitCard}>
             <div className={styles.benefitIcon}>
@@ -160,13 +160,13 @@ export default function HowItWorksPage() {
         <div className={styles.footerContent}>
           <div className={styles.logo}>
             <Star size={24} />
-            Legal Review IQ
+            Law Review IQ
           </div>
           <p className={styles.footerText}>
             AI-powered contract analysis for modern businesses
           </p>
           <div className={styles.footerCopyright}>
-            © 2024 Legal Review IQ. All rights reserved.
+            © 2024 Law Review IQ. All rights reserved.
           </div>
         </div>
       </footer>

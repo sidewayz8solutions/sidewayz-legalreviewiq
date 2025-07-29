@@ -12,7 +12,7 @@ export default function ContactPage() {
         <div className={styles.navContent}>
           <Link href="/" className={styles.logo}>
             <Sparkles size={24} />
-            Legal Review IQ
+            Law Review IQ
           </Link>
           <div className={styles.navLinks}>
             <Link href="/#features" className={styles.navLink}>✨ Features</Link>
@@ -39,7 +39,7 @@ export default function ContactPage() {
           </div>
           <h1 className={styles.title}>Contact Support</h1>
           <p className={styles.subtitle}>
-            Get help with Legal Review IQ - we're here to assist you
+            Get help with Law Review IQ - we're here to assist you
           </p>
         </div>
 
@@ -54,8 +54,8 @@ export default function ContactPage() {
               <p className={styles.contactDescription}>
                 Send us an email and we'll respond within 24 hours
               </p>
-              <a href="mailto:support@legalreviewiq.com" className={styles.contactLink}>
-                support@legalreviewiq.com
+              <a href="mailto:support@lawreviewiq.com" className={styles.contactLink}>
+                support@lawreviewiq.com
               </a>
             </div>
 
@@ -189,7 +189,7 @@ export default function ContactPage() {
               <div className={styles.faqItem}>
                 <h3 className={styles.faqQuestion}>Can you help with contract analysis questions?</h3>
                 <p className={styles.faqAnswer}>
-                  Absolutely! Our support team can help you understand how to use Legal Review IQ effectively and interpret the analysis results.
+                  Absolutely! Our support team can help you understand how to use Law Review IQ effectively and interpret the analysis results.
                 </p>
               </div>
             </div>
@@ -205,7 +205,7 @@ export default function ContactPage() {
             <div className={styles.footerSection}>
               <div className={`${styles.logo} ${styles.footerLogo}`}>
                 <Sparkles size={24} />
-                Legal Review IQ
+                Law Review IQ
               </div>
               <p className={styles.footerDescription}>
                 AI-powered contract analysis that helps businesses understand legal documents, identify risks, and make informed decisions in seconds.
@@ -228,7 +228,7 @@ export default function ContactPage() {
               <h3 className={styles.footerTitle}>Support</h3>
               <div className={styles.footerLinks}>
                 <Link href="/contact" className={styles.footerLink}>Contact Support</Link>
-                <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Email Us</a>
+                <a href="mailto:support@lawreviewiq.com" className={styles.footerLink}>Email Us</a>
                 <a href="tel:+12253019908" className={styles.footerLink}>Call Us</a>
               </div>
             </div>
@@ -245,7 +245,7 @@ export default function ContactPage() {
 
           <div className={styles.footerBottom}>
             <div className={styles.footerCopyright}>
-              © 2024 Legal Review IQ. All rights reserved.
+              © 2024 Law Review IQ. All rights reserved.
             </div>
             <div className={styles.footerMeta}>
               <span>Made with ❤️ for businesses worldwide</span>

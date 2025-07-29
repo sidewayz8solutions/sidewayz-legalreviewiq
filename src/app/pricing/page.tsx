@@ -204,7 +204,7 @@ export default function PricingPage() {
         {/* Value Proposition Section */}
         <div className={styles.valueSection}>
           <h2 className={styles.valueTitle}>
-            Why Legal Review IQ is Essential for Your Business
+            Why Law Review IQ is Essential for Your Business
           </h2>
           <div className={styles.valueGrid}>
             <div className={styles.valueCard}>
@@ -300,7 +300,7 @@ export default function PricingPage() {
             <div className={styles.footerSection}>
               <div className={`${styles.logo} ${styles.footerLogo}`}>
                 <Sparkles size={24} />
-                Legal Review IQ
+                Law Review IQ
               </div>
               <p className={styles.footerDescription}>
                 AI-powered contract analysis that helps businesses understand legal documents, identify risks, and make informed decisions in seconds.
@@ -340,7 +340,7 @@ export default function PricingPage() {
               <h3 className={styles.footerTitle}>Support</h3>
               <div className={styles.footerLinks}>
                 <Link href="/contact" className={styles.footerLink}>Contact Support</Link>
-                <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Email Us</a>
+                <a href="mailto:support@lawreviewiq.com" className={styles.footerLink}>Email Us</a>
                 <a href="tel:+12253019908" className={styles.footerLink}>Call Us</a>
                 <a href="#" className={styles.footerLink}>Help Center</a>
               </div>
@@ -349,7 +349,7 @@ export default function PricingPage() {
 
           <div className={styles.footerBottom}>
             <div className={styles.footerCopyright}>
-              © 2024 Legal Review IQ. All rights reserved.
+              © 2024 Law Review IQ. All rights reserved.
             </div>
             <div className={styles.footerMeta}>
               <span>Made with ❤️ for businesses worldwide</span>

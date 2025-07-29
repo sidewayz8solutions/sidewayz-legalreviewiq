@@ -12,7 +12,7 @@ export default function TermsOfServicePage() {
         <div className={styles.navContent}>
           <Link href="/" className={styles.logo}>
             <Sparkles size={24} />
-            Legal Review IQ
+            Law Review IQ
           </Link>
           <div className={styles.navLinks}>
             <Link href="/#features" className={styles.navLink}>Features</Link>
@@ -47,14 +47,14 @@ export default function TermsOfServicePage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>1. Agreement to Terms</h2>
             <p className={styles.paragraph}>
-              By accessing and using Legal Review IQ ("Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+              By accessing and using Law Review IQ ("Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
             </p>
           </section>
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>2. Description of Service</h2>
             <p className={styles.paragraph}>
-              Legal Review IQ provides AI-powered contract analysis services that help users understand contract terms, identify potential risks, and receive plain-English explanations of legal documents. Our service is designed to assist with contract review but does not replace professional legal advice.
+              Law Review IQ provides AI-powered contract analysis services that help users understand contract terms, identify potential risks, and receive plain-English explanations of legal documents. Our service is designed to assist with contract review but does not replace professional legal advice.
             </p>
           </section>
 
@@ -82,7 +82,7 @@ export default function TermsOfServicePage() {
               <div>
                 <h3 className={styles.warningTitle}>Important Legal Notice</h3>
                 <p className={styles.warningText}>
-                  Legal Review IQ provides AI-powered analysis for informational purposes only. Our service does not constitute legal advice and should not be relied upon as a substitute for consultation with qualified legal professionals. We are not liable for any decisions made based on our analysis.
+                  Law Review IQ provides AI-powered analysis for informational purposes only. Our service does not constitute legal advice and should not be relied upon as a substitute for consultation with qualified legal professionals. We are not liable for any decisions made based on our analysis.
                 </p>
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function TermsOfServicePage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>7. Intellectual Property</h2>
             <p className={styles.paragraph}>
-              The Legal Review IQ platform, including all software, algorithms, and content, is protected by intellectual property laws. You retain ownership of the contracts you upload, and we do not claim any rights to your documents.
+              The Law Review IQ platform, including all software, algorithms, and content, is protected by intellectual property laws. You retain ownership of the contracts you upload, and we do not claim any rights to your documents.
             </p>
           </section>
 
@@ -119,7 +119,7 @@ export default function TermsOfServicePage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>10. Contact Information</h2>
             <p className={styles.paragraph}>
-              If you have any questions about these Terms of Service, please contact us at legal@legalreviewiq.com.
+              If you have any questions about these Terms of Service, please contact us at legal@lawreviewiq.com.
             </p>
           </section>
         </div>
@@ -130,7 +130,7 @@ export default function TermsOfServicePage() {
         <div className={styles.footerContent}>
           <div className={styles.logo}>
             <Sparkles size={24} />
-            Legal Review IQ
+            Law Review IQ
           </div>
           <p className={styles.footerText}>
             AI-powered contract analysis for modern businesses
@@ -140,7 +140,7 @@ export default function TermsOfServicePage() {
             <Link href="/privacy" className={styles.footerLink}>Privacy Policy</Link>
           </div>
           <div className={styles.footerCopyright}>
-            © 2024 Legal Review IQ. All rights reserved.
+            © 2024 Law Review IQ. All rights reserved.
           </div>
         </div>
       </footer>
