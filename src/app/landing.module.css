@@ -28,15 +28,17 @@
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
-  background: linear-gradient(135deg, #000000 0%, #be185d 100%);
+  background: linear-gradient(45deg, #ff7474 0%, #526ef9 25%, #ff7474 50%, #526ef9   75%, #ff0062 100%);
+  background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  animation: heroGradientShift 20s ease-in-out infinite;
 }
 
 .navLinks {
@@ -146,6 +148,29 @@
   100% { background-position: 0% 50%; }
 }
 
+@keyframes heroGradientShift {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    background-position: 100% 50%;
+    filter: hue-rotate(10deg);
+  }
+  50% {
+    background-position: 200% 50%;
+    filter: hue-rotate(0deg);
+  }
+  75% {
+    background-position: 300% 50%;
+    filter: hue-rotate(-10deg);
+  }
+  100% {
+    background-position: 400% 50%;
+    filter: hue-rotate(0deg);
+  }
+}
+
 .heroContent {
   position: relative;
   z-index: 2;
@@ -157,7 +182,7 @@
   font-size: 4rem;
   font-weight: 900;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #1f2937 0%, #667eea 50%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff0062 0%, #000000 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -360,7 +385,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #e29595 0%, #ff6868 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -426,7 +451,7 @@
   font-weight: 900;
   text-align: center;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #1f2937 0%, #667eea 100%);
+  background: linear-gradient(135deg, #ff0062 0%, #000000 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

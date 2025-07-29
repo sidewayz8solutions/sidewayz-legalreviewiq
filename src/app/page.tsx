@@ -18,7 +18,7 @@ export default function LandingPage() {
       <nav className={styles.nav}>
         <div className={styles.navContent}>
           <div className={styles.logo}>
-            <Sparkles size={24} />
+            <Sparkles size={30} />
             Legal Review IQ
           </div>
           <div className={styles.navLinks}>
@@ -189,10 +189,10 @@ export default function LandingPage() {
             <div className={styles.footerSection}>
               <h3 className={styles.footerTitle}>Support</h3>
               <div className={styles.footerLinks}>
-                <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Contact Support</a>
+                <Link href="/contact" className={styles.footerLink}>Contact Support</Link>
+                <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Email Us</a>
+                <a href="tel:+12253019908" className={styles.footerLink}>Call Us</a>
                 <a href="#" className={styles.footerLink}>Help Center</a>
-                <a href="#" className={styles.footerLink}>API Documentation</a>
-                <a href="#" className={styles.footerLink}>Status Page</a>
               </div>
             </div>
           </div>

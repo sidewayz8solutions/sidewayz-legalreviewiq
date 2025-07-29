@@ -1,5 +1,28 @@
 /* Privacy Policy page styles - extends terms.module.css */
 
+@keyframes heroGradientShift {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    background-position: 100% 50%;
+    filter: hue-rotate(10deg);
+  }
+  50% {
+    background-position: 200% 50%;
+    filter: hue-rotate(0deg);
+  }
+  75% {
+    background-position: 300% 50%;
+    filter: hue-rotate(-10deg);
+  }
+  100% {
+    background-position: 400% 50%;
+    filter: hue-rotate(0deg);
+  }
+}
+
 .container {
   min-height: 100vh;
   background: linear-gradient(135deg, #000000 0%, #1f1f1f 30%, #be185d 100%);
@@ -29,7 +52,8 @@
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  background: linear-gradient(135deg, #000000 0%, #be185d 100%);
+  background: linear-gradient(45deg, #ff0062 0%, #000000 25%, #ff0062 50%, #000000 75%, #ff0062 100%);
+  background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -37,6 +61,7 @@
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
+  animation: heroGradientShift 8s ease-in-out infinite;
 }
 
 .navLinks {

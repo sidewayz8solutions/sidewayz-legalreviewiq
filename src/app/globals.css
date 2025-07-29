@@ -1,10 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 /* Force styles to ensure they show up */
@@ -38,25 +43,6 @@ body {
   color: var(--foreground);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
-}
-
-/* Force some basic styling to show up */
-.bg-blue-600 {
-  background-color: #2563eb !important;
-}
-
-.bg-gradient-to-r {
-  background-image: linear-gradient(to right, var(--tw-gradient-stops)) !important;
-}
-
-.from-blue-600 {
-  --tw-gradient-from: #2563eb !important;
-  --tw-gradient-to: rgb(37 99 235 / 0) !important;
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
-}
-
-.to-purple-600 {
-  --tw-gradient-to: #9333ea !important;
 }
 
 /* Smooth scrolling for anchor links */
@@ -121,7 +107,7 @@ html {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff0062 0%, #140028 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

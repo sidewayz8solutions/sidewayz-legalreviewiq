@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 import { supabaseAdmin } from '@/lib/supabase'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16'
+  apiVersion: '2025-06-30.basil'
 })
 
 // Define your pricing plans
@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     let customerId = org?.stripe_customer_id
+    let userEmail = null;
 
     if (!customerId) {
       // Create new Stripe customer
@@ -85,8 +86,9 @@ export async function POST(request: NextRequest) {
         .eq('id', userId)
         .single()
 
+      userEmail = userData?.email;
       const customer = await stripe.customers.create({
-        email: userData?.email,
+        email: userEmail,
         name: userData?.full_name,
         metadata: {
           organizationId
@@ -100,10 +102,28 @@ export async function POST(request: NextRequest) {
         .from('organizations')
         .update({ stripe_customer_id: customerId })
         .eq('id', organizationId)
+    } else {
+      // Get user email for existing customer
+      const { data: userData } = await supabaseAdmin
+        .from('users')
+        .select('email')
+        .eq('id', userId)
+        .single()
+      
+      userEmail = userData?.email;
     }
 
     // Create checkout session for subscription
-    const plan = PLANS[planType as keyof typeof PLANS]
+    const plan = PLANS[planType as keyof typeof PLANS];
+    
+    // Check if the plan has a priceId (not payAsYouGo)
+    if (!('priceId' in plan)) {
+      return NextResponse.json(
+        { error: 'Invalid plan type for subscription' },
+        { status: 400 }
+      )
+    }
+    
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
@@ -115,12 +135,18 @@ export async function POST(request: NextRequest) {
       allow_promotion_codes: true,
       success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: cancelUrl,
+      billing_address_collection: 'auto',
+      customer_email: userEmail, // Now properly defined
       subscription_data: {
         trial_period_days: 7,
         metadata: {
           organizationId,
           planType
         }
+      },
+      metadata: {
+        userId: userId,
+        planType: planType
       }
     })
 

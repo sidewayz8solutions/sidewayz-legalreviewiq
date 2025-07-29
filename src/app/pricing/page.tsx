@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Star, Sparkles, ArrowRight } from 'lucide-react'
+import { Check, Star, Sparkles, ArrowRight, Shield, Clock, TrendingUp } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
@@ -216,14 +216,56 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* Testimonial */}
-        <div className={styles.testimonialSection}>
-          <p className={styles.testimonialQuote}>
-            "{TESTIMONIAL.quote}"
-          </p>
-          <div>
-            <p className={styles.testimonialAuthor}>{TESTIMONIAL.author}</p>
-            <p className={styles.testimonialRole}>{TESTIMONIAL.role}</p>
+        {/* Value Proposition Section */}
+        <div className={styles.valueSection}>
+          <h2 className={styles.valueTitle}>
+            Why Legal Review IQ is Essential for Your Business
+          </h2>
+          <div className={styles.valueGrid}>
+            <div className={styles.valueCard}>
+              <div className={styles.valueIcon}>
+                <Shield size={32} />
+              </div>
+              <h3 className={styles.valueCardTitle}>Protect Your Business</h3>
+              <p className={styles.valueCardText}>
+                Identify hidden risks, unfavorable terms, and potential liabilities before you sign.
+                Our AI catches what human reviewers often miss, saving you from costly legal disputes.
+              </p>
+              <div className={styles.valueStats}>
+                <span className={styles.statNumber}>95%</span>
+                <span className={styles.statLabel}>Risk Detection Accuracy</span>
+              </div>
+            </div>
+
+            <div className={styles.valueCard}>
+              <div className={styles.valueIcon}>
+                <Clock size={32} />
+              </div>
+              <h3 className={styles.valueCardTitle}>Save Time & Money</h3>
+              <p className={styles.valueCardText}>
+                Get comprehensive contract analysis in under 30 seconds instead of waiting days
+                for legal review. Reduce legal fees by 80% while making faster business decisions.
+              </p>
+              <div className={styles.valueStats}>
+                <span className={styles.statNumber}>30 sec</span>
+                <span className={styles.statLabel}>Average Analysis Time</span>
+              </div>
+            </div>
+
+            <div className={styles.valueCard}>
+              <div className={styles.valueIcon}>
+                <TrendingUp size={32} />
+              </div>
+              <h3 className={styles.valueCardTitle}>Make Better Decisions</h3>
+              <p className={styles.valueCardText}>
+                Understand complex legal language with plain-English explanations. Get actionable
+                recommendations and negotiation strategies to improve your contract terms.
+              </p>
+              <div className={styles.valueStats}>
+                <span className={styles.statNumber}>10x</span>
+                <span className={styles.statLabel}>Faster Understanding</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -312,10 +354,10 @@ export default function PricingPage() {
             <div className={styles.footerSection}>
               <h3 className={styles.footerTitle}>Support</h3>
               <div className={styles.footerLinks}>
-                <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Contact Support</a>
+                <Link href="/contact" className={styles.footerLink}>Contact Support</Link>
+                <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Email Us</a>
+                <a href="tel:+12253019908" className={styles.footerLink}>Call Us</a>
                 <a href="#" className={styles.footerLink}>Help Center</a>
-                <a href="#" className={styles.footerLink}>API Documentation</a>
-                <a href="#" className={styles.footerLink}>Status Page</a>
               </div>
             </div>
           </div>
