@@ -1,7 +1,11 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowRight, Shield, DollarSign, FileSearch, Sparkles } from 'lucide-react'
+import Navigation from '@/components/Navigation'
+import { useUser } from '@/contexts/UserContext'
 import styles from './landing.module.css'
 
 // Real social proof - update with actual numbers as you grow
@@ -11,26 +15,50 @@ const SOCIAL_PROOF = {
   timesSaved: 380
 }
 
-export default function LandingPage() {
+function LandingPageContent() {
+  const { setPremiumUser } = useUser()
+  const searchParams = useSearchParams()
+  const [isUpdatingPremium, setIsUpdatingPremium] = useState(false)
+
+  useEffect(() => {
+    // Check if user just completed premium purchase
+    if (searchParams.get('premium') === 'true') {
+      console.log('Premium parameter detected, setting user as premium...')
+      setIsUpdatingPremium(true)
+
+      // Set user as premium immediately
+      setPremiumUser()
+
+      // Show success message for 2 seconds
+      setTimeout(() => {
+        setIsUpdatingPremium(false)
+        // Remove the parameter from URL
+        window.history.replaceState({}, '', '/')
+      }, 2000)
+    }
+  }, [searchParams, setPremiumUser])
+
   return (
-    <div className={styles.container}>
-      {/* Navigation */}
-      <nav className={styles.nav}>
-        <div className={styles.navContent}>
-          <div className={styles.logo}>
-            <Sparkles size={30} />
-            Legal Review IQ
-          </div>
-          <div className={styles.navLinks}>
-            <Link href="#features" className={styles.navLink}>✨ Features</Link>
-            <Link href="/how-it-works" className={styles.navLink}>🚀 How it Works</Link>
-            <Link href="/pricing" className={styles.navLink}>💎 Pricing</Link>
-            <Link href="/dashboard/contracts/upload" className={styles.ctaButton}>
-              Try Free →
-            </Link>
-          </div>
+    <>
+      <Navigation />
+
+      {/* Premium Update Success Message */}
+      {isUpdatingPremium && (
+        <div style={{
+          position: 'fixed',
+          top: '100px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#10b981',
+          color: 'white',
+          padding: '1rem 2rem',
+          borderRadius: '0.5rem',
+          zIndex: 1000,
+          boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+        }}>
+          🎉 Welcome to Premium! Updating your navigation...
         </div>
-      </nav>
+      )}
 
       {/* Hero Section */}
       <section className={styles.hero}>
@@ -155,11 +183,6 @@ export default function LandingPage() {
               <p className={styles.footerDescription}>
                 AI-powered contract analysis that helps businesses understand legal documents, identify risks, and make informed decisions in seconds.
               </p>
-              <div className={styles.socialLinks}>
-                <a href="#" className={styles.socialLink}>Twitter</a>
-                <a href="#" className={styles.socialLink}>LinkedIn</a>
-                <a href="#" className={styles.socialLink}>GitHub</a>
-              </div>
             </div>
 
             {/* Product */}
@@ -168,20 +191,7 @@ export default function LandingPage() {
               <div className={styles.footerLinks}>
                 <Link href="/#features" className={styles.footerLink}>Features</Link>
                 <Link href="/how-it-works" className={styles.footerLink}>How it Works</Link>
-                <Link href="/demo" className={styles.footerLink}>Sample Analysis</Link>
                 <Link href="/pricing" className={styles.footerLink}>Pricing</Link>
-                <Link href="/dashboard/contracts/upload" className={styles.footerLink}>Try Free</Link>
-              </div>
-            </div>
-
-            {/* Legal */}
-            <div className={styles.footerSection}>
-              <h3 className={styles.footerTitle}>Legal</h3>
-              <div className={styles.footerLinks}>
-                <Link href="/terms" className={styles.footerLink}>Terms of Service</Link>
-                <Link href="/privacy" className={styles.footerLink}>Privacy Policy</Link>
-                <a href="#" className={styles.footerLink}>Cookie Policy</a>
-                <a href="#" className={styles.footerLink}>GDPR Compliance</a>
               </div>
             </div>
 
@@ -191,8 +201,6 @@ export default function LandingPage() {
               <div className={styles.footerLinks}>
                 <Link href="/contact" className={styles.footerLink}>Contact Support</Link>
                 <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Email Us</a>
-                <a href="tel:+12253019908" className={styles.footerLink}>Call Us</a>
-                <a href="#" className={styles.footerLink}>Help Center</a>
               </div>
             </div>
           </div>
@@ -201,12 +209,17 @@ export default function LandingPage() {
             <div className={styles.footerCopyright}>
               © 2024 Legal Review IQ. All rights reserved.
             </div>
-            <div className={styles.footerMeta}>
-              <span>Made with ❤️ for businesses worldwide</span>
-            </div>
           </div>
         </div>
       </footer>
+    </>
+  )
+}
+
+export default function LandingPage() {
+  return (
+    <div className={styles.container}>
+      <LandingPageContent />
     </div>
   )
 }

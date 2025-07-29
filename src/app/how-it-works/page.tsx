@@ -1,29 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Upload, Sparkles, CheckCircle, FileSearch, Shield, Clock, DollarSign } from 'lucide-react'
+import { ArrowRight, Upload, CheckCircle, FileSearch, Shield, Clock, DollarSign } from 'lucide-react'
+import Navigation from '@/components/Navigation'
+import { useUser } from '@/contexts/UserContext'
 import styles from './how-it-works.module.css'
 
 export default function HowItWorksPage() {
+  const { user } = useUser()
   return (
     <div className={styles.container}>
-      {/* Navigation */}
-      <nav className={styles.nav}>
-        <div className={styles.navContent}>
-          <Link href="/" className={styles.logo}>
-            <Sparkles size={24} />
-            Legal Review IQ
-          </Link>
-          <div className={styles.navLinks}>
-            <Link href="/#features" className={styles.navLink}>✨ Features</Link>
-            <Link href="/how-it-works" className={styles.navLink}>🚀 How it Works</Link>
-            <Link href="/pricing" className={styles.navLink}>💎 Pricing</Link>
-            <Link href="/dashboard/contracts/upload" className={styles.ctaButton}>
-              Try Free →
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <section className={styles.hero}>
@@ -39,10 +26,12 @@ export default function HowItWorksPage() {
               See Sample Analysis
               <ArrowRight size={20} />
             </Link>
-            <Link href="/dashboard/contracts/upload" className={styles.ctaButton}>
-              Try Free
-              <ArrowRight size={20} />
-            </Link>
+            {!user?.isPremium && (
+              <Link href="/dashboard/contracts/upload" className={styles.ctaButton}>
+                Try Free
+                <ArrowRight size={20} />
+              </Link>
+            )}
           </div>
         </div>
       </section>

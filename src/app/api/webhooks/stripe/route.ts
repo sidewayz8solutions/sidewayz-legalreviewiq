@@ -64,9 +64,9 @@ export async function POST(request: NextRequest) {
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log('Checkout completed:', session.id)
-  
+
   const { userId, planType, organizationId } = session.metadata || {}
-  
+
   if (!userId || !organizationId) {
     console.error('Missing metadata in checkout session')
     return
@@ -87,8 +87,27 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         product_type: session.metadata?.productType || 'single_contract'
       })
   } else if (session.mode === 'subscription') {
-    // Handle subscription - this will be processed in subscription.created webhook
-    console.log('Subscription checkout completed, waiting for subscription.created event')
+    // Handle subscription - create subscription record immediately for demo
+    console.log('Subscription checkout completed, creating subscription record')
+
+    // For demo purposes, create the subscription record immediately
+    // In production, this would be handled by the subscription.created webhook
+    if (planType && organizationId) {
+      await supabaseAdmin
+        .from('subscriptions')
+        .upsert({
+          organization_id: organizationId,
+          stripe_subscription_id: session.subscription as string || `demo_sub_${Date.now()}`,
+          stripe_customer_id: session.customer as string || `demo_cus_${Date.now()}`,
+          plan_type: planType,
+          status: 'active',
+          current_period_start: new Date().toISOString(),
+          current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+          created_at: new Date().toISOString()
+        })
+
+      console.log('Demo subscription created for organization:', organizationId)
+    }
   }
 }
 

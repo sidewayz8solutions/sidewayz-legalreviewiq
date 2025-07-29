@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { Check, Star, Sparkles, ArrowRight, Shield, Clock, TrendingUp } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
+import Navigation from '@/components/Navigation'
 import styles from './pricing.module.css'
 
 const TESTIMONIAL = {
@@ -15,7 +15,6 @@ const TESTIMONIAL = {
 }
 
 export default function PricingPage() {
-  const router = useRouter()
   const [loading, setLoading] = useState<string | null>(null)
 
   const handleCheckout = async (planType: string) => {
@@ -29,7 +28,7 @@ export default function PricingPage() {
           planType,
           organizationId: 'demo-org', // Get from auth in production
           userId: 'demo-user',
-          successUrl: `${window.location.origin}/dashboard/success`,
+          successUrl: `${window.location.origin}/?premium=true`,
           cancelUrl: `${window.location.origin}/pricing`
         })
       })
@@ -44,23 +43,7 @@ export default function PricingPage() {
 
   return (
     <div className={styles.container}>
-      {/* Navigation */}
-      <nav className={styles.nav}>
-        <div className={styles.navContent}>
-          <Link href="/" className={styles.logo}>
-            <Sparkles size={24} />
-            Legal Review IQ
-          </Link>
-          <div className={styles.navLinks}>
-            <Link href="/#features" className={styles.navLink}>✨ Features</Link>
-            <Link href="/how-it-works" className={styles.navLink}>🚀 How it Works</Link>
-            <Link href="/pricing" className={styles.navLink}>💎 Pricing</Link>
-            <Link href="/dashboard/contracts/upload" className={styles.ctaButton}>
-              Try Free →
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <section className={styles.hero}>
@@ -166,6 +149,8 @@ export default function PricingPage() {
                 {loading === 'starter' ? 'Loading...' : 'Start Free Trial'}
                 {!loading && <ArrowRight size={20} />}
               </button>
+
+
             </div>
           </div>
 

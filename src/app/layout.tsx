@@ -1,4 +1,5 @@
 import Script from 'next/script'
+import ClientProviders from '@/components/ClientProviders'
 
 export default function RootLayout({
   children,
@@ -8,7 +9,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <ClientProviders>
+          {children}
+        </ClientProviders>
 
         {/* Simple Analytics - Privacy-friendly */}
         <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />

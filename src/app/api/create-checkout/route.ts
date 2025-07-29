@@ -46,6 +46,15 @@ export async function POST(request: NextRequest) {
 
     console.log('Creating checkout session for:', { planType, organizationId, userId })
 
+    // For demo purposes, check if we have real Stripe keys
+    if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY.startsWith('sk_test_demo')) {
+      // Return a demo success URL for testing
+      console.log('Demo mode: No real Stripe keys configured')
+      return NextResponse.json({
+        sessionUrl: `${successUrl}?demo=true&plan=${planType}`
+      })
+    }
+
     // For pay-as-you-go, create a one-time payment
     if (planType === 'payAsYouGo') {
       const session = await stripe.checkout.sessions.create({
@@ -152,7 +161,7 @@ export async function POST(request: NextRequest) {
       billing_address_collection: 'auto',
       customer_email: userEmail, // Now properly defined
       subscription_data: {
-        trial_period_days: 7,
+        trial_period_days: 3,
         metadata: {
           organizationId,
           planType
