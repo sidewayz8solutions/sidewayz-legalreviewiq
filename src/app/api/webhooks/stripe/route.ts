@@ -113,8 +113,13 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
 async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   console.log('Payment succeeded:', invoice.id)
-  
-  if (invoice.subscription) {
+
+  // Handle subscription property which can be string, Subscription object, or null
+  const subscriptionId = typeof invoice.subscription === 'string'
+    ? invoice.subscription
+    : invoice.subscription?.id
+
+  if (subscriptionId) {
     // Update subscription payment status
     await supabaseAdmin
       .from('subscriptions')
@@ -123,7 +128,7 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
         current_period_start: new Date(invoice.period_start * 1000).toISOString(),
         current_period_end: new Date(invoice.period_end * 1000).toISOString()
       })
-      .eq('stripe_subscription_id', invoice.subscription)
+      .eq('stripe_subscription_id', subscriptionId)
   }
 }
 
