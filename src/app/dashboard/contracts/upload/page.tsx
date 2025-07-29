@@ -78,7 +78,11 @@ export default function UploadContract() {
       router.push(`/dashboard/contracts/${data.contractId}`)
     } catch (error) {
       console.error('Upload error:', error)
-      toast.error(error.message || 'Failed to analyze contract')
+      const errorMessage =
+        typeof error === 'object' && error !== null && 'message' in error
+          ? String((error as { message?: unknown }).message)
+          : 'Failed to analyze contract'
+      toast.error(errorMessage)
     } finally {
       setUploading(false)
     }

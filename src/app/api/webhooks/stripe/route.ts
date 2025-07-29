@@ -114,10 +114,15 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   console.log('Payment succeeded:', invoice.id)
 
+  // Type assertion to access subscription property from webhook payload
+  const invoiceWithSubscription = invoice as Stripe.Invoice & {
+    subscription?: string | Stripe.Subscription | null
+  }
+
   // Handle subscription property which can be string, Subscription object, or null
-  const subscriptionId = typeof invoice.subscription === 'string'
-    ? invoice.subscription
-    : invoice.subscription?.id
+  const subscriptionId = typeof invoiceWithSubscription.subscription === 'string'
+    ? invoiceWithSubscription.subscription
+    : invoiceWithSubscription.subscription?.id
 
   if (subscriptionId) {
     // Update subscription payment status
@@ -134,13 +139,18 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
 
 async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
   console.log('Subscription created:', subscription.id)
-  
+
   const { organizationId, planType } = subscription.metadata || {}
-  
+
   if (!organizationId || !planType) {
     console.error('Missing metadata in subscription')
     return
   }
+
+  // Get current period from the first subscription item
+  const firstItem = subscription.items.data[0]
+  const currentPeriodStart = firstItem?.current_period_start
+  const currentPeriodEnd = firstItem?.current_period_end
 
   // Create subscription record
   await supabaseAdmin
@@ -151,21 +161,28 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
       stripe_customer_id: subscription.customer as string,
       plan_type: planType,
       status: subscription.status,
-      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      current_period_start: currentPeriodStart ? new Date(currentPeriodStart * 1000).toISOString() : null,
+      current_period_end: currentPeriodEnd ? new Date(currentPeriodEnd * 1000).toISOString() : null,
       trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null
     })
 }
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   console.log('Subscription updated:', subscription.id)
-  
+
+  // Get current period from the first subscription item
+  const firstItem = subscription.items.data[0]
+  const currentPeriodStart = firstItem?.current_period_start
+  const currentPeriodEnd = firstItem?.current_period_end
+
   await supabaseAdmin
     .from('subscriptions')
     .update({
       status: subscription.status,
-      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      current_period_start: currentPeriodStart
+        ? new Date(currentPeriodStart * 1000).toISOString()
+        : null,
+      current_period_end: currentPeriodEnd ? new Date(currentPeriodEnd * 1000).toISOString() : null,
       trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null
     })
     .eq('stripe_subscription_id', subscription.id)
