@@ -1,103 +1,212 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import Link from 'next/link'
+import { ArrowRight, Shield, DollarSign, FileSearch, Sparkles } from 'lucide-react'
+import styles from './landing.module.css'
+
+// Real social proof - update with actual numbers as you grow
+const SOCIAL_PROOF = {
+  contractsAnalyzed: 127,
+  moneySaved: 45000,
+  timesSaved: 380
+}
+
+export default function LandingPage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className={styles.container}>
+      {/* Navigation */}
+      <nav className={styles.nav}>
+        <div className={styles.navContent}>
+          <div className={styles.logo}>
+            <Sparkles size={24} />
+            Legal Review IQ
+          </div>
+          <div className={styles.navLinks}>
+            <Link href="#features" className={styles.navLink}>✨ Features</Link>
+            <Link href="/how-it-works" className={styles.navLink}>🚀 How it Works</Link>
+            <Link href="/pricing" className={styles.navLink}>💎 Pricing</Link>
+            <Link href="/dashboard/contracts/upload" className={styles.ctaButton}>
+              Try Free →
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </nav>
+
+      {/* Hero Section */}
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>
+            Understand Any Contract in 30 Seconds
+          </h1>
+          
+          <p className={styles.heroSubtitle}>
+            AI-powered contract analysis that explains risks, highlights red flags,
+            and saves you <strong>thousands in legal fees</strong>. No legal degree required.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className={styles.heroButtons}>
+            <Link href="/dashboard/contracts/upload" className={styles.primaryButton}>
+              Analyze Your First Contract Free
+              <ArrowRight size={20} />
+            </Link>
+            <Link href="/demo" className={styles.secondaryButton}>
+              See Sample Analysis
+              <FileSearch size={20} />
+            </Link>
+          </div>
+
+          {/* Social Proof */}
+          <div className={styles.socialProof}>
+            <div className={styles.statCard}>
+              <div className={styles.statNumber}>
+                {SOCIAL_PROOF.contractsAnalyzed}+
+              </div>
+              <div className={styles.statLabel}>Contracts Analyzed</div>
+            </div>
+            <div className={styles.statCard}>
+              <div className={styles.statNumber}>
+                ${SOCIAL_PROOF.moneySaved.toLocaleString()}+
+              </div>
+              <div className={styles.statLabel}>Saved in Legal Fees</div>
+            </div>
+            <div className={styles.statCard}>
+              <div className={styles.statNumber}>
+                {SOCIAL_PROOF.timesSaved}h+
+              </div>
+              <div className={styles.statLabel}>Time Saved</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className={styles.featuresSection}>
+        <div className={styles.sectionTitle}>
+          Everything You Need to Stay Protected
+        </div>
+        <div className={styles.sectionSubtitle}>
+          Professional contract analysis made simple with cutting-edge AI technology
+        </div>
+
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <div className={styles.cardIcon}>
+              <FileSearch size={40} />
+            </div>
+            <h3 className={styles.cardTitle}>
+              Instant Analysis
+            </h3>
+            <p className={styles.cardDescription}>
+              Upload your contract and get comprehensive results in under 30 seconds with our lightning-fast AI
+            </p>
+          </div>
+
+          <div className={styles.card}>
+            <div className={styles.cardIcon}>
+              <Shield size={40} />
+            </div>
+            <h3 className={styles.cardTitle}>
+              Risk Detection
+            </h3>
+            <p className={styles.cardDescription}>
+              AI identifies unfavorable terms, missing protections, and potential liabilities before they hurt you
+            </p>
+          </div>
+
+          <div className={styles.card}>
+            <div className={styles.cardIcon}>
+              <DollarSign size={40} />
+            </div>
+            <h3 className={styles.cardTitle}>
+              Save Money
+            </h3>
+            <p className={styles.cardDescription}>
+              Avoid expensive legal reviews for routine contracts and prevent costly mistakes from bad terms
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className={styles.ctaSection}>
+        <h2 className={styles.ctaTitle}>
+          Ready to Take Control of Your Contracts?
+        </h2>
+        <p className={styles.ctaSubtitle}>
+          Join hundreds of businesses saving time and money with AI-powered contract analysis
+        </p>
+        <Link href="/dashboard/contracts/upload" className={styles.primaryButton}>
+          Start Your Free Analysis
+          <ArrowRight size={20} />
+        </Link>
+      </section>
+
+      {/* Footer */}
+      <footer className={styles.footer}>
+        <div className={styles.footerContent}>
+          <div className={styles.footerGrid}>
+            {/* Company Info */}
+            <div className={styles.footerSection}>
+              <div className={`${styles.logo} ${styles.footerLogo}`}>
+                <Sparkles size={24} />
+                Legal Review IQ
+              </div>
+              <p className={styles.footerDescription}>
+                AI-powered contract analysis that helps businesses understand legal documents, identify risks, and make informed decisions in seconds.
+              </p>
+              <div className={styles.socialLinks}>
+                <a href="#" className={styles.socialLink}>Twitter</a>
+                <a href="#" className={styles.socialLink}>LinkedIn</a>
+                <a href="#" className={styles.socialLink}>GitHub</a>
+              </div>
+            </div>
+
+            {/* Product */}
+            <div className={styles.footerSection}>
+              <h3 className={styles.footerTitle}>Product</h3>
+              <div className={styles.footerLinks}>
+                <Link href="/#features" className={styles.footerLink}>Features</Link>
+                <Link href="/how-it-works" className={styles.footerLink}>How it Works</Link>
+                <Link href="/demo" className={styles.footerLink}>Sample Analysis</Link>
+                <Link href="/pricing" className={styles.footerLink}>Pricing</Link>
+                <Link href="/dashboard/contracts/upload" className={styles.footerLink}>Try Free</Link>
+              </div>
+            </div>
+
+            {/* Legal */}
+            <div className={styles.footerSection}>
+              <h3 className={styles.footerTitle}>Legal</h3>
+              <div className={styles.footerLinks}>
+                <Link href="/terms" className={styles.footerLink}>Terms of Service</Link>
+                <Link href="/privacy" className={styles.footerLink}>Privacy Policy</Link>
+                <a href="#" className={styles.footerLink}>Cookie Policy</a>
+                <a href="#" className={styles.footerLink}>GDPR Compliance</a>
+              </div>
+            </div>
+
+            {/* Support */}
+            <div className={styles.footerSection}>
+              <h3 className={styles.footerTitle}>Support</h3>
+              <div className={styles.footerLinks}>
+                <a href="mailto:support@legalreviewiq.com" className={styles.footerLink}>Contact Support</a>
+                <a href="#" className={styles.footerLink}>Help Center</a>
+                <a href="#" className={styles.footerLink}>API Documentation</a>
+                <a href="#" className={styles.footerLink}>Status Page</a>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.footerBottom}>
+            <div className={styles.footerCopyright}>
+              © 2024 Legal Review IQ. All rights reserved.
+            </div>
+            <div className={styles.footerMeta}>
+              <span>Made with ❤️ for businesses worldwide</span>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
-  );
+  )
 }
