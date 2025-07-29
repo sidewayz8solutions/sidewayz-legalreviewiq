@@ -10,9 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 const PLANS = {
   starter: {
     name: 'Starter',
-    priceId: process.env.NODE_ENV === 'production'
-      ? 'price_production_starter'
-      : 'price_1234567890', // Create in Stripe dashboard
+    priceId: process.env.STRIPE_STARTER_PRICE_ID || 'price_1234567890',
     features: {
       contractsPerMonth: 10,
       aiCredits: 10,
@@ -21,9 +19,7 @@ const PLANS = {
   },
   professional: {
     name: 'Professional',
-    priceId: process.env.NODE_ENV === 'production'
-      ? 'price_production_pro'
-      : 'price_0987654321',
+    priceId: process.env.STRIPE_PROFESSIONAL_PRICE_ID || 'price_0987654321',
     features: {
       contractsPerMonth: 50,
       aiCredits: 50,
@@ -39,6 +35,16 @@ const PLANS = {
 export async function POST(request: NextRequest) {
   try {
     const { planType, organizationId, userId, successUrl, cancelUrl } = await request.json()
+
+    // Validate required fields
+    if (!planType || !organizationId || !userId || !successUrl || !cancelUrl) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+
+    console.log('Creating checkout session for:', { planType, organizationId, userId })
 
     // For pay-as-you-go, create a one-time payment
     if (planType === 'payAsYouGo') {
@@ -115,12 +121,20 @@ export async function POST(request: NextRequest) {
 
     // Create checkout session for subscription
     const plan = PLANS[planType as keyof typeof PLANS];
-    
+
     // Check if the plan has a priceId (not payAsYouGo)
     if (!('priceId' in plan)) {
       return NextResponse.json(
         { error: 'Invalid plan type for subscription' },
         { status: 400 }
+      )
+    }
+
+    // Validate that we have a real price ID
+    if (plan.priceId.startsWith('price_123') || plan.priceId.startsWith('price_098')) {
+      return NextResponse.json(
+        { error: 'Stripe price IDs not configured. Please set STRIPE_STARTER_PRICE_ID and STRIPE_PROFESSIONAL_PRICE_ID environment variables.' },
+        { status: 500 }
       )
     }
     
