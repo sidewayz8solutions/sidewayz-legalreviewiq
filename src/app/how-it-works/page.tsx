@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Upload, CheckCircle, FileSearch, Shield, Clock, DollarSign } from 'lucide-react'
+import { ArrowRight, Upload, CheckCircle, FileSearch, Shield, Clock, DollarSign, Star } from 'lucide-react'
 import Navigation from '@/components/Navigation'
 import { useUser } from '@/contexts/UserContext'
 import styles from './how-it-works.module.css'
@@ -65,7 +65,7 @@ export default function HowItWorksPage() {
           <div className={styles.stepCard}>
             <div className={styles.stepNumber}>2</div>
             <div className={styles.stepIcon}>
-              <Sparkles size={40} />
+              <Star size={40} />
             </div>
             <h3 className={styles.stepTitle}>AI Analyzes Every Clause</h3>
             <p className={styles.stepDescription}>
@@ -77,7 +77,7 @@ export default function HowItWorksPage() {
                 <span>Under 30 seconds</span>
               </div>
               <div className={styles.feature}>
-                <Sparkles size={16} />
+                <Star size={16} />
                 <span>99% accuracy rate</span>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function HowItWorksPage() {
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
           <div className={styles.logo}>
-            <Sparkles size={24} />
+            <Star size={24} />
             Legal Review IQ
           </div>
           <p className={styles.footerText}>
