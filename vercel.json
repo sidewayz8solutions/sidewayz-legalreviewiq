@@ -5,8 +5,8 @@
     }
   },
   "env": {
-    "OPENAI_API_KEY": "@openai-api-key",
-    "STRIPE_SECRET_KEY": "@stripe-secret-key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase-service-role-key"
+    "OPENAI_API_KEY": "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",
+    "STRIPE_SECRET_KEY": "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",
+    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1bmFpaWNqY2VsdmR1bmx1d3FoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Mzc2MDg2MSwiZXhwIjoyMDY5MzM2ODYxfQ.8Ugafib74_1btlN5acUz3rX2U4JyjHGWmSFsQthENMA"
   }
 }
