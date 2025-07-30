@@ -3,7 +3,16 @@ import { supabaseAdmin } from '@/lib/supabase'
 
 export async function POST() {
   try {
-    let results = {}
+    // Initialize results with expected keys
+    let results: {
+      organization: string,
+      user: string,
+      contractTest: string
+    } = {
+      organization: '',
+      user: '',
+      contractTest: ''
+    }
 
     // Try to create test organization
     try {

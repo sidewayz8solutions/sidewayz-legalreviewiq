@@ -10,7 +10,7 @@ export async function GET() {
 
   // Test Supabase connection and check tables
   let supabaseTest = 'NOT_TESTED'
-  let tableCheck = {}
+  let tableCheck: { [key: string]: string } = {}
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
     try {
       const { createClient } = await import('@supabase/supabase-js')
