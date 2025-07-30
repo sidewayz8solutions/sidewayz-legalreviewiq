@@ -6,78 +6,20 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!
 })
 
-// This function handles the contract analysis
+// Test endpoint that accepts plain text instead of files
 export async function POST(request: NextRequest) {
   try {
-    // Extract the contract text from the uploaded file
-    const formData = await request.formData()
-    const file = formData.get('file') as File
-    const userId = formData.get('userId') as string
-    const organizationId = formData.get('organizationId') as string
+    const { contractText, userId, organizationId } = await request.json()
 
-    if (!file || !userId || !organizationId) {
+    if (!contractText || !userId || !organizationId) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Missing required fields: contractText, userId, organizationId' },
         { status: 400 }
       )
     }
 
-    // Convert file to buffer for processing
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-
-    // Extract text based on file type
-    let extractedText = ''
-
-    if (file.type === 'application/pdf') {
-      try {
-        // Dynamic import to avoid build-time issues
-        const pdfParse = (await import('pdf-parse')).default
-        const pdfData = await pdfParse(buffer)
-        extractedText = pdfData.text
-
-        if (!extractedText || extractedText.trim().length === 0) {
-          return NextResponse.json(
-            { error: 'Could not extract text from PDF. The file may be corrupted or contain only images.' },
-            { status: 400 }
-          )
-        }
-      } catch (pdfError) {
-        console.error('PDF parsing error:', pdfError)
-        return NextResponse.json(
-          { error: 'Invalid PDF file. Please ensure the file is a valid PDF document.' },
-          { status: 400 }
-        )
-      }
-    } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-      try {
-        // Handle Word documents - also use dynamic import
-        const mammoth = await import('mammoth')
-        const result = await mammoth.extractRawText({ buffer })
-        extractedText = result.value
-
-        if (!extractedText || extractedText.trim().length === 0) {
-          return NextResponse.json(
-            { error: 'Could not extract text from Word document. The file may be corrupted.' },
-            { status: 400 }
-          )
-        }
-      } catch (docxError) {
-        console.error('DOCX parsing error:', docxError)
-        return NextResponse.json(
-          { error: 'Invalid Word document. Please ensure the file is a valid DOCX document.' },
-          { status: 400 }
-        )
-      }
-    } else {
-      return NextResponse.json(
-        { error: 'Unsupported file type. Please upload PDF or DOCX.' },
-        { status: 400 }
-      )
-    }
-
-    // Check if contract is too long (important for API costs)
-    const wordCount = extractedText.split(/\s+/).length
+    // Check if contract is too long
+    const wordCount = contractText.split(/\s+/).length
     if (wordCount > 10000) {
       return NextResponse.json(
         { error: 'Contract too long. Maximum 10,000 words.' },
@@ -85,14 +27,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create contract record in database (skip uploaded_by to avoid foreign key constraint)
+    // Create contract record in database (without uploaded_by to avoid foreign key constraint)
     const { data: contract, error: contractError } = await supabaseAdmin
       .from('contracts')
       .insert({
         organization_id: organizationId,
-        file_name: file.name,
-        file_url: '', // We'll update this after upload
-        file_size: file.size,
+        file_name: 'test-contract.txt',
+        file_url: '',
+        file_size: contractText.length,
         status: 'processing'
       })
       .select()
@@ -121,7 +63,7 @@ export async function POST(request: NextRequest) {
     Be direct about risks. Use plain English.
 
     Contract text:
-    ${extractedText}
+    ${contractText}
 
     Respond in JSON format with keys: riskLevel, summary, keyTerms, redFlags, favorableTerms, recommendations
     `
@@ -129,10 +71,10 @@ export async function POST(request: NextRequest) {
     let completion, analysis
     try {
       completion = await openai.chat.completions.create({
-        model: 'gpt-4o',
+        model: 'gpt-4-turbo-preview',
         messages: [{ role: 'user', content: analysisPrompt }],
         response_format: { type: 'json_object' },
-        temperature: 0.3, // Lower temperature for more consistent analysis
+        temperature: 0.3,
         max_tokens: 2000
       })
 
@@ -141,7 +83,7 @@ export async function POST(request: NextRequest) {
       }
 
       analysis = JSON.parse(completion.choices[0].message.content)
-
+      
       // Validate required fields in analysis
       const requiredFields = ['riskLevel', 'summary', 'keyTerms', 'redFlags', 'favorableTerms', 'recommendations']
       for (const field of requiredFields) {
@@ -149,22 +91,11 @@ export async function POST(request: NextRequest) {
           throw new Error(`Missing required field in analysis: ${field}`)
         }
       }
-
-    } catch (openaiError: any) {
+      
+    } catch (openaiError) {
       console.error('OpenAI API error:', openaiError)
-
-      // Provide specific error messages based on the error type
-      let errorMessage = 'Failed to analyze contract with AI. Please try again.'
-      if (openaiError?.status === 401) {
-        errorMessage = 'OpenAI API key is invalid or expired. Please check your API key configuration.'
-      } else if (openaiError?.status === 429) {
-        errorMessage = 'OpenAI API rate limit exceeded. Please try again in a few minutes.'
-      } else if (openaiError?.status === 500) {
-        errorMessage = 'OpenAI service is temporarily unavailable. Please try again later.'
-      }
-
       return NextResponse.json(
-        { error: errorMessage },
+        { error: 'Failed to analyze contract with AI. Please try again.' },
         { status: 500 }
       )
     }

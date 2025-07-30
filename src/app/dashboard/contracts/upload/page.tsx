@@ -58,9 +58,9 @@ export default function UploadContract() {
     setUploading(true)
     const formData = new FormData()
     formData.append('file', file)
-    // In production, get these from auth context
-    formData.append('userId', 'demo-user-id')
-    formData.append('organizationId', 'demo-org-id')
+    // Use proper UUIDs for demo - in production, get these from auth context
+    formData.append('userId', '550e8400-e29b-41d4-a716-446655440000')
+    formData.append('organizationId', '550e8400-e29b-41d4-a716-446655440001')
 
     try {
       const response = await fetch('/api/analyze-contract', {
