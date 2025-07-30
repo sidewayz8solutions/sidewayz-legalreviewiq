@@ -91,6 +91,11 @@ export async function POST(request: NextRequest) {
           throw new Error(`Missing required field in analysis: ${field}`)
         }
       }
+
+      // Normalize risk level to lowercase to match database constraint
+      if (analysis.riskLevel) {
+        analysis.riskLevel = analysis.riskLevel.toLowerCase()
+      }
       
     } catch (openaiError) {
       console.error('OpenAI API error:', openaiError)

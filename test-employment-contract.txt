@@ -1,0 +1,39 @@
+EMPLOYMENT AGREEMENT
+
+This Employment Agreement is entered into on April 1, 2024, between Innovative Tech Corp ("Company") and Alex Rodriguez ("Employee").
+
+1. POSITION AND DUTIES
+Employee is hired as Senior Software Engineer and agrees to perform duties including software development, code review, mentoring junior developers, and participating in architectural decisions.
+
+2. COMPENSATION
+Company agrees to pay Employee an annual salary of $120,000, payable bi-weekly. Employee is eligible for annual performance bonuses up to 20% of base salary.
+
+3. BENEFITS
+Employee is entitled to:
+• Health, dental, and vision insurance (Company pays 80%)
+• 401(k) with 4% company match
+• 20 days paid vacation annually
+• 10 days sick leave
+• $2,000 annual professional development allowance
+
+4. WORK SCHEDULE
+Employee's standard work schedule is Monday through Friday, 9:00 AM to 5:00 PM, with flexibility for remote work up to 3 days per week.
+
+5. CONFIDENTIALITY AND NON-DISCLOSURE
+Employee agrees to maintain strict confidentiality of all proprietary information, trade secrets, and client data. This obligation continues for 2 years after termination.
+
+6. NON-COMPETE CLAUSE
+For 12 months after termination, Employee agrees not to work for direct competitors within a 50-mile radius or solicit Company clients or employees.
+
+7. TERMINATION
+Either party may terminate this agreement with 2 weeks notice. Company may terminate immediately for cause. Upon termination, Employee must return all company property.
+
+8. DISPUTE RESOLUTION
+Any disputes shall be resolved through mediation, and if unsuccessful, binding arbitration under California state law.
+
+By signing below, both parties agree to the terms of this Employment Agreement.
+
+Innovative Tech Corp                  Employee
+_________________                     _________________
+Jennifer Liu, HR Director             Alex Rodriguez
+Date: ___________                     Date: ___________

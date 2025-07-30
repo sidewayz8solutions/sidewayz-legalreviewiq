@@ -150,6 +150,11 @@ export async function POST(request: NextRequest) {
         }
       }
 
+      // Normalize risk level to lowercase to match database constraint
+      if (analysis.riskLevel) {
+        analysis.riskLevel = analysis.riskLevel.toLowerCase()
+      }
+
     } catch (openaiError: any) {
       console.error('OpenAI API error:', openaiError)
 
