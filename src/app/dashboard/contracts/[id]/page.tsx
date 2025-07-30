@@ -9,10 +9,23 @@ interface ContractAnalysis {
   riskLevel: 'low' | 'medium' | 'high' | 'critical'
   riskScore: number
   summary: string
-  keyTerms: string[]
-  redFlags: string[]
-  favorableTerms: string[]
-  recommendations: string[]
+  keyTerms: string[] | Record<string, string>
+  redFlags: string[] | Record<string, string>
+  favorableTerms: string[] | Record<string, string>
+  recommendations: string[] | Record<string, string>
+}
+
+// Helper function to convert object or array to array of strings
+const normalizeToArray = (data: string[] | Record<string, string> | any): string[] => {
+  if (Array.isArray(data)) {
+    return data
+  }
+  if (typeof data === 'object' && data !== null) {
+    return Object.entries(data).map(([key, value]) =>
+      typeof value === 'string' ? `${key}: ${value}` : String(value)
+    )
+  }
+  return []
 }
 
 export default function ContractResults() {
@@ -126,18 +139,21 @@ export default function ContractResults() {
             <AlertTriangle className="h-6 w-6 text-red-600 mr-2" />
             <h3 className="text-xl font-semibold">Red Flags</h3>
           </div>
-          {analysis.redFlags.length > 0 ? (
-            <ul className="space-y-3">
-              {analysis.redFlags.map((flag, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="text-red-600 mr-2">•</span>
-                  <span className="text-gray-700">{flag}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-600">No significant red flags found</p>
-          )}
+          {(() => {
+            const redFlags = normalizeToArray(analysis.redFlags)
+            return redFlags.length > 0 ? (
+              <ul className="space-y-3">
+                {redFlags.map((flag, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-red-600 mr-2">•</span>
+                    <span className="text-gray-700">{flag}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">No significant red flags found</p>
+            )
+          })()}
         </div>
 
         {/* Favorable Terms */}
@@ -146,18 +162,21 @@ export default function ContractResults() {
             <CheckCircle className="h-6 w-6 text-green-600 mr-2" />
             <h3 className="text-xl font-semibold">Favorable Terms</h3>
           </div>
-          {analysis.favorableTerms.length > 0 ? (
-            <ul className="space-y-3">
-              {analysis.favorableTerms.map((term, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="text-green-600 mr-2">•</span>
-                  <span className="text-gray-700">{term}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-600">No notably favorable terms identified</p>
-          )}
+          {(() => {
+            const favorableTerms = normalizeToArray(analysis.favorableTerms)
+            return favorableTerms.length > 0 ? (
+              <ul className="space-y-3">
+                {favorableTerms.map((term, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-green-600 mr-2">•</span>
+                    <span className="text-gray-700">{term}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">No notably favorable terms identified</p>
+            )
+          })()}
         </div>
       </div>
 
@@ -168,7 +187,7 @@ export default function ContractResults() {
           <h3 className="text-xl font-semibold">Key Terms Summary</h3>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
-          {analysis.keyTerms.map((term, index) => (
+          {normalizeToArray(analysis.keyTerms).map((term, index) => (
             <div key={index} className="bg-white rounded p-3">
               <p className="text-gray-700">{term}</p>
             </div>
@@ -183,7 +202,7 @@ export default function ContractResults() {
           <h3 className="text-xl font-semibold">Recommendations</h3>
         </div>
         <ol className="space-y-3">
-          {analysis.recommendations.map((rec, index) => (
+          {normalizeToArray(analysis.recommendations).map((rec, index) => (
             <li key={index} className="flex items-start">
               <span className="font-medium text-purple-700 mr-2">{index + 1}.</span>
               <span className="text-gray-700">{rec}</span>
