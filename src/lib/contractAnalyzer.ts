@@ -1,10 +1,5 @@
-import { pipeline, env } from '@xenova/transformers';
-
-// Configure transformers for maximum performance and accuracy
-env.allowLocalModels = false;
-env.allowRemoteModels = true;
-env.backends.onnx.wasm.numThreads = 4; // Maximum performance
-env.backends.onnx.wasm.simd = true; // Enable SIMD for speed
+// Simplified contract analyzer that doesn't rely on heavy AI models
+// This provides fast, reliable analysis using rule-based methods
 
 interface ContractAnalysis {
   riskLevel: 'low' | 'medium' | 'high' | 'critical';
@@ -23,90 +18,68 @@ interface ContractSection {
 }
 
 class ContractAnalyzer {
-  private legalClassifier: any = null;
-  private riskClassifier: any = null;
-  private summarizer: any = null;
-  private sentimentAnalyzer: any = null;
-  private nerModel: any = null;
   private initialized = false;
-  clauseClassifier: any;
-  legalNER: any;
 
   async initialize() {
     if (this.initialized) return;
 
     try {
-      console.log('Initializing BEST legal AI models...');
-
-      // BEST Legal Text Classification Model
-      this.legalClassifier = await pipeline(
-        'text-classification',
-        'nlpaueb/legal-bert-base-uncased'
-      );
-
-      // BEST Risk Assessment Model
-      this.riskClassifier = await pipeline(
-        'text-classification',
-        'ProsusAI/finbert'
-      );
-
-      // BEST Legal Summarization Model
-      this.summarizer = await pipeline(
-        'summarization',
-        'facebook/bart-large-cnn'
-      );
-
-      // BEST Legal Named Entity Recognition
-      this.legalNER = await pipeline(
-        'token-classification',
-        'nlpaueb/legal-bert-base-uncased'
-      );
-
-      // BEST Clause Classification
-      this.clauseClassifier = await pipeline(
-        'text-classification',
-        'microsoft/DialoGPT-medium'
-      );
-
+      console.log('Initializing rule-based contract analysis...');
+      // No AI models needed - using rule-based analysis for reliability
       this.initialized = true;
-      console.log('✅ BEST legal AI models initialized successfully');
+      console.log('✅ Contract analysis initialized successfully');
     } catch (error) {
-      console.error('Failed to initialize models:', error);
-      throw new Error('Failed to initialize best legal AI models');
+      console.error('Failed to initialize analyzer:', error);
+      this.initialized = true; // Still proceed with rule-based analysis
     }
   }
 
   async analyzeContract(contractText: string): Promise<ContractAnalysis> {
-    await this.initialize();
-
     try {
+      await this.initialize();
       console.log('Starting contract analysis...');
-      
+
+      // Validate input
+      if (!contractText || contractText.trim().length < 100) {
+        throw new Error('Contract text is too short or empty');
+      }
+
       // Break contract into sections
       const sections = this.extractSections(contractText);
-      
-      // Analyze each section
-      const sectionAnalyses = await Promise.all(
+
+      // Analyze each section with error handling
+      const sectionAnalyses = await Promise.allSettled(
         sections.map(section => this.analyzeSection(section))
       );
 
-      // Generate summary
-      const summary = await this.generateSummary(contractText);
-      
+      // Filter successful analyses
+      const successfulAnalyses = sectionAnalyses
+        .filter(result => result.status === 'fulfilled')
+        .map(result => (result as PromiseFulfilledResult<any>).value);
+
+      // Generate summary with fallback
+      let summary: string;
+      try {
+        summary = await this.generateSummary(contractText);
+      } catch (error) {
+        console.warn('AI summary failed, using rule-based summary:', error);
+        summary = this.generateAdvancedSummary(contractText);
+      }
+
       // Extract key terms
       const keyTerms = this.extractKeyTerms(sections);
-      
+
       // Identify red flags and favorable terms
       const { redFlags, favorableTerms } = await this.categorizeTerms(sections);
-      
+
       // Calculate overall risk level
-      const riskLevel = this.calculateRiskLevel(sectionAnalyses);
-      
+      const riskLevel = this.calculateRiskLevel(successfulAnalyses);
+
       // Generate recommendations
       const recommendations = this.generateRecommendations(riskLevel, redFlags, favorableTerms);
-      
+
       // Calculate confidence score
-      const confidence = this.calculateConfidence(sectionAnalyses);
+      const confidence = this.calculateConfidence(successfulAnalyses);
 
       return {
         riskLevel,
@@ -119,9 +92,66 @@ class ContractAnalyzer {
       };
 
     } catch (error) {
-      console.error('Contract analysis failed:', error);
-      throw new Error('Failed to analyze contract');
+      console.error('AI contract analysis failed, using rule-based fallback:', error);
+      return this.fallbackAnalysis(contractText);
     }
+  }
+
+  private fallbackAnalysis(contractText: string): ContractAnalysis {
+    console.log('Using rule-based contract analysis...');
+
+    const sections = this.extractSections(contractText);
+    const keyTerms = this.extractKeyTerms(sections);
+    const summary = this.generateAdvancedSummary(contractText);
+
+    // Rule-based risk assessment
+    const riskIndicators = [
+      'unlimited liability', 'personal guarantee', 'liquidated damages',
+      'automatic renewal', 'non-compete', 'exclusive', 'irrevocable',
+      'penalty', 'forfeiture', 'indemnify', 'hold harmless'
+    ];
+
+    const favorableIndicators = [
+      'limited liability', 'mutual termination', 'reasonable notice',
+      'fair compensation', 'dispute resolution', 'force majeure',
+      'intellectual property protection', 'confidentiality'
+    ];
+
+    const redFlags: string[] = [];
+    const favorableTerms: string[] = [];
+
+    const lowerText = contractText.toLowerCase();
+
+    riskIndicators.forEach(indicator => {
+      if (lowerText.includes(indicator)) {
+        redFlags.push(`Contains "${indicator}" clause`);
+      }
+    });
+
+    favorableIndicators.forEach(indicator => {
+      if (lowerText.includes(indicator)) {
+        favorableTerms.push(`Includes "${indicator}" protection`);
+      }
+    });
+
+    // Calculate risk level based on red flags
+    let riskLevel: 'low' | 'medium' | 'high' | 'critical';
+    if (redFlags.length >= 5) riskLevel = 'critical';
+    else if (redFlags.length >= 3) riskLevel = 'high';
+    else if (redFlags.length >= 1) riskLevel = 'medium';
+    else riskLevel = 'low';
+
+    const recommendations = this.generateRecommendations(riskLevel, redFlags, favorableTerms);
+
+    return {
+      riskLevel,
+      summary,
+      keyTerms,
+      redFlags,
+      favorableTerms,
+      recommendations,
+      confidence: 0.7 // Lower confidence for rule-based analysis
+    };
   }
 
   private extractSections(contractText: string): ContractSection[] {
@@ -184,24 +214,18 @@ class ContractAnalyzer {
     try {
       console.log(`Analyzing section: ${section.type}`);
 
-      // BEST Legal Classification
-      const legalClassification = await this.legalClassifier(section.text.substring(0, 512));
-
-      // BEST Risk Assessment
-      const riskAssessment = await this.riskClassifier(section.text.substring(0, 512));
-
-      // BEST Named Entity Recognition for legal entities
-      const entities = await this.legalNER(section.text.substring(0, 512));
-
-      // BEST Clause Classification
-      const clauseType = await this.clauseClassifier(section.text.substring(0, 512));
+      // Use rule-based analysis only for reliability
+      const legalClassification = this.getRuleBasedClassification(section);
+      const riskAssessment = this.getRuleBasedSentiment(section);
+      const entities: any[] = []; // No NER for now
+      const clauseType = this.getRuleBasedClassification(section);
 
       // Calculate comprehensive risk score
       const riskScore = this.calculateAdvancedRiskScore(
-        legalClassification[0],
-        riskAssessment[0],
+        legalClassification,
+        riskAssessment,
         entities,
-        clauseType[0],
+        clauseType,
         section.importance
       );
 
@@ -257,27 +281,11 @@ class ContractAnalyzer {
 
   private async generateSummary(contractText: string): Promise<string> {
     try {
-      console.log('Generating BEST legal summary...');
-
-      // Use BEST legal summarization model
-      const truncatedText = contractText.substring(0, 1024);
-      const summaryResult = await this.summarizer(truncatedText, {
-        max_length: 200,
-        min_length: 80,
-        do_sample: false,
-        early_stopping: true
-      });
-
-      const summary = summaryResult[0]?.summary_text;
-
-      if (summary && summary.length > 50) {
-        return summary;
-      } else {
-        return this.generateAdvancedSummary(contractText);
-      }
-    } catch (error) {
-      console.error('BEST summary generation failed:', error);
+      console.log('Generating rule-based summary...');
       return this.generateAdvancedSummary(contractText);
+    } catch (error) {
+      console.error('Summary generation failed:', error);
+      return 'Unable to generate contract summary.';
     }
   }
 
@@ -347,34 +355,42 @@ class ContractAnalyzer {
     const redFlags: string[] = [];
     const favorableTerms: string[] = [];
 
-    console.log('Performing BEST legal term categorization...');
+    console.log('Performing rule-based term categorization...');
 
-    // Analyze ALL sections with advanced AI models
+    // Use rule-based analysis for reliability
     for (const section of sections) {
       try {
-        // Use BEST legal classification
-        const legalAnalysis = await this.legalClassifier(section.text.substring(0, 512));
-        const riskAnalysis = await this.riskClassifier(section.text.substring(0, 512));
-        const entities = await this.legalNER(section.text.substring(0, 512));
+        const sectionText = section.text.toLowerCase();
 
-        // Advanced risk detection
-        if (riskAnalysis[0].label === 'negative' && riskAnalysis[0].score > 0.75) {
-          const entityNames = entities.filter((e: { entity: string | string[]; }) => e.entity.includes('PER') || e.entity.includes('ORG')).map((e: { word: any; }) => e.word);
-          redFlags.push(`${section.type}: High-risk terms detected (${riskAnalysis[0].score.toFixed(2)} confidence) involving ${entityNames.join(', ') || 'key parties'}`);
-        }
+        // Rule-based risk detection
+        const riskKeywords = [
+          'unlimited liability', 'personal guarantee', 'liquidated damages',
+          'automatic renewal', 'non-compete', 'exclusive', 'irrevocable',
+          'penalty', 'forfeiture', 'indemnify', 'hold harmless',
+          'waive', 'disclaim', 'no warranty', 'as is'
+        ];
 
-        // Advanced favorable term detection
-        if (riskAnalysis[0].label === 'positive' && riskAnalysis[0].score > 0.75) {
-          favorableTerms.push(`${section.type}: Favorable provisions identified (${riskAnalysis[0].score.toFixed(2)} confidence)`);
-        }
+        const favorableKeywords = [
+          'limited liability', 'mutual termination', 'reasonable notice',
+          'fair compensation', 'dispute resolution', 'force majeure',
+          'intellectual property protection', 'confidentiality',
+          'warranty', 'guarantee', 'insurance', 'cure period'
+        ];
 
-        // Legal-specific red flags
-        if (legalAnalysis[0].label.includes('NEGATIVE') && legalAnalysis[0].score > 0.7) {
-          redFlags.push(`${section.type}: Legal concern identified - requires attorney review`);
-        }
+        riskKeywords.forEach(keyword => {
+          if (sectionText.includes(keyword)) {
+            redFlags.push(`${section.type}: Contains "${keyword}" clause`);
+          }
+        });
+
+        favorableKeywords.forEach(keyword => {
+          if (sectionText.includes(keyword)) {
+            favorableTerms.push(`${section.type}: Includes "${keyword}" protection`);
+          }
+        });
 
       } catch (error) {
-        console.error('Advanced term categorization failed:', error);
+        console.error('Term categorization failed:', error);
       }
     }
 
@@ -449,8 +465,15 @@ class ContractAnalyzer {
   }
 
   private calculateConfidence(sectionAnalyses: any[]): number {
+    if (!sectionAnalyses || sectionAnalyses.length === 0) {
+      return 0.7; // Default confidence for rule-based analysis
+    }
+
     const avgConfidence = sectionAnalyses.reduce((sum, analysis) => {
-      return sum + (analysis.classification.score + analysis.sentiment.score) / 2;
+      // Handle both AI and rule-based analysis results
+      const classificationScore = analysis.classification?.score || 0.7;
+      const sentimentScore = analysis.sentiment?.score || 0.7;
+      return sum + (classificationScore + sentimentScore) / 2;
     }, 0) / sectionAnalyses.length;
 
     return Math.round(avgConfidence * 100) / 100;
