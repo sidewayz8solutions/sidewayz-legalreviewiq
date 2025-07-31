@@ -28,49 +28,97 @@ export async function POST(request: NextRequest) {
     // Extract text based on file type
     let extractedText = ''
 
-    if (file.type === 'application/pdf') {
+    // Check if file is PDF (by MIME type or extension)
+    const fileName = file.name.toLowerCase()
+    const isPdf = file.type === 'application/pdf' || fileName.endsWith('.pdf')
+
+    if (isPdf) {
       try {
+        console.log('Processing PDF file:', {
+          name: file.name,
+          type: file.type,
+          size: file.size
+        })
+
         // Dynamic import to avoid build-time issues
         const pdfParse = (await import('pdf-parse')).default
         const pdfData = await pdfParse(buffer)
         extractedText = pdfData.text
 
+        console.log('PDF text extraction result:', {
+          textLength: extractedText?.length || 0,
+          hasText: !!extractedText?.trim()
+        })
+
         if (!extractedText || extractedText.trim().length === 0) {
           return NextResponse.json(
-            { error: 'Could not extract text from PDF. The file may be corrupted or contain only images.' },
+            { error: 'Could not extract text from PDF. The file may be corrupted, password-protected, or contain only images.' },
             { status: 400 }
           )
         }
       } catch (pdfError) {
-        console.error('PDF parsing error:', pdfError)
+        console.error('PDF parsing error:', {
+          error: pdfError,
+          message: pdfError instanceof Error ? pdfError.message : 'Unknown error',
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size
+        })
         return NextResponse.json(
-          { error: 'Invalid PDF file. Please ensure the file is a valid PDF document.' },
+          {
+            error: 'Failed to parse PDF file. Please ensure the file is a valid, unprotected PDF document.',
+            details: pdfError instanceof Error ? pdfError.message : 'Unknown parsing error'
+          },
           { status: 400 }
         )
       }
-    } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileName.endsWith('.docx')) {
       try {
+        console.log('Processing DOCX file:', {
+          name: file.name,
+          type: file.type,
+          size: file.size
+        })
+
         // Handle Word documents - also use dynamic import
         const mammoth = await import('mammoth')
         const result = await mammoth.extractRawText({ buffer })
         extractedText = result.value
 
+        console.log('DOCX text extraction result:', {
+          textLength: extractedText?.length || 0,
+          hasText: !!extractedText?.trim()
+        })
+
         if (!extractedText || extractedText.trim().length === 0) {
           return NextResponse.json(
-            { error: 'Could not extract text from Word document. The file may be corrupted.' },
+            { error: 'Could not extract text from Word document. The file may be corrupted or password-protected.' },
             { status: 400 }
           )
         }
       } catch (docxError) {
-        console.error('DOCX parsing error:', docxError)
+        console.error('DOCX parsing error:', {
+          error: docxError,
+          message: docxError instanceof Error ? docxError.message : 'Unknown error',
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size
+        })
         return NextResponse.json(
-          { error: 'Invalid Word document. Please ensure the file is a valid DOCX document.' },
+          {
+            error: 'Failed to parse Word document. Please ensure the file is a valid DOCX document.',
+            details: docxError instanceof Error ? docxError.message : 'Unknown parsing error'
+          },
           { status: 400 }
         )
       }
     } else {
       return NextResponse.json(
-        { error: 'Unsupported file type. Please upload PDF or DOCX.' },
+        {
+          error: 'Unsupported file type. Please upload a PDF (.pdf) or Word document (.docx).',
+          receivedType: file.type,
+          fileName: file.name
+        },
         { status: 400 }
       )
     }

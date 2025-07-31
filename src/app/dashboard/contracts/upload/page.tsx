@@ -36,10 +36,13 @@ export default function UploadContract() {
   }
 
   const handleFile = (file: File) => {
-    // Validate file type
-    const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-    if (!validTypes.includes(file.type)) {
-      toast.error('Please upload a PDF or Word document')
+    // More robust file type validation
+    const fileName = file.name.toLowerCase()
+    const isPdf = file.type === 'application/pdf' || fileName.endsWith('.pdf')
+    const isDocx = file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileName.endsWith('.docx')
+
+    if (!isPdf && !isDocx) {
+      toast.error('Please upload a PDF or Word document (.pdf or .docx)')
       return
     }
 
@@ -48,6 +51,15 @@ export default function UploadContract() {
       toast.error('File size must be less than 10MB')
       return
     }
+
+    // Log file details for debugging
+    console.log('File selected:', {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      isPdf,
+      isDocx
+    })
 
     setFile(file)
   }
@@ -155,7 +167,7 @@ export default function UploadContract() {
               ref={fileInputRef}
               type="file"
               className={styles.hiddenInput}
-              accept=".pdf,.docx"
+              accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               onChange={(e) => e.target.files && handleFile(e.target.files[0])}
             />
           </div>
