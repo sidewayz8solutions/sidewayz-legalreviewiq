@@ -5,7 +5,6 @@ export async function GET() {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'SET' : 'MISSING',
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'SET' : 'MISSING',
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY ? 'SET' : 'MISSING',
   }
 
   // Test Supabase connection and check tables
@@ -50,27 +49,20 @@ export async function GET() {
     }
   }
 
-  // Test OpenAI connection
-  let openaiTest = 'NOT_TESTED'
-  if (process.env.OPENAI_API_KEY) {
-    try {
-      const OpenAI = (await import('openai')).default
-      const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY
-      })
-      
-      // Just test if we can create the client without making an API call
-      openaiTest = 'CLIENT_CREATED'
-    } catch (err) {
-      openaiTest = `ERROR: ${err instanceof Error ? err.message : 'Unknown error'}`
-    }
+  // Test Hugging Face transformers availability
+  let transformersTest = 'NOT_TESTED'
+  try {
+    const { env } = await import('@xenova/transformers')
+    transformersTest = 'PACKAGE_AVAILABLE'
+  } catch (err) {
+    transformersTest = `ERROR: ${err instanceof Error ? err.message : 'Unknown error'}`
   }
 
   return NextResponse.json({
     environmentVariables: envCheck,
     supabaseTest,
     tableCheck,
-    openaiTest,
+    transformersTest,
     timestamp: new Date().toISOString()
   })
 }

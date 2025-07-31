@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 
-// Mock endpoint that simulates OpenAI analysis without making API calls
+// Mock endpoint that simulates contract analysis without using AI models
 export async function POST(request: NextRequest) {
   try {
     const { contractText, userId, organizationId } = await request.json()

@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 async function testMockAnalysis() {
-  console.log('Testing Contract Analysis with Mock OpenAI...\n');
+  console.log('Testing Contract Analysis with Mock Analysis...\n');
 
   // Read the test contract content
   const contractContent = fs.readFileSync('test-contract.txt', 'utf8');

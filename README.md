@@ -19,16 +19,12 @@ An AI-powered app that simplifies legal contracts for consumers. Analyzes contra
 - Node.js 18+
 - npm or yarn
 - Supabase account
-- OpenAI API account
 
 ### Environment Variables
 
 Create a `.env.local` file in the root directory with the following variables:
 
 ```env
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key_here
-
 # Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
@@ -62,13 +58,14 @@ npm run dev
 
 ## 🔧 Configuration
 
-### OpenAI API Key Setup
+### AI Model Configuration
 
-1. Go to [OpenAI Platform](https://platform.openai.com/account/api-keys)
-2. Create a new API key
-3. Add it to your `.env.local` file as `OPENAI_API_KEY`
+This application uses Hugging Face transformers for contract analysis:
+- **Legal-BERT**: For legal text classification
+- **DistilBART**: For contract summarization
+- **RoBERTa**: For sentiment analysis
 
-**Note**: The current API key in the codebase is invalid and needs to be replaced.
+No API keys required - all models run locally on your servers.
 
 ### Supabase Database Setup
 
@@ -92,9 +89,10 @@ To test if everything is working:
 
 ### Common Issues
 
-1. **"OpenAI API key is invalid"**
-   - Check that your API key is correct and has sufficient credits
-   - Ensure the key has access to GPT-4 models
+1. **"Failed to initialize AI models"**
+   - Check that @xenova/transformers package is installed
+   - Ensure sufficient memory allocation for model loading
+   - Verify Vercel function timeout settings
 
 2. **Database foreign key errors**
    - Ensure test organization exists in database
