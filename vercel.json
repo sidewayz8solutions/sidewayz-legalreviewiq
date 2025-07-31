@@ -1,13 +1,13 @@
 {
   "functions": {
     "app/api/analyze-contract/route.ts": {
-      "maxDuration": 30
-    },
-    "app/api/test-openai-detailed/route.ts": {
-      "maxDuration": 30
+      "maxDuration": 60
     },
     "app/api/test-analyze/route.ts": {
-      "maxDuration": 30
+      "maxDuration": 60
+    },
+    "app/api/test-contract-simple/route.ts": {
+      "maxDuration": 60
     }
   }
 }

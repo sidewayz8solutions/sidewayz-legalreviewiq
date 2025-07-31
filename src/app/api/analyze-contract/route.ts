@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
-import OpenAI from 'openai'
+import { contractAnalyzer } from '@/lib/contractAnalyzer'
 
 // Force this route to run on Node.js runtime
 export const runtime = 'nodejs'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
-})
 
 // This function handles the contract analysis
 export async function POST(request: NextRequest) {
@@ -109,70 +105,32 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Analyze contract with GPT-4
-    const analysisPrompt = `
-    You are an expert contract analyst. Analyze the following contract and provide:
+    // Analyze contract with Hugging Face models
+    console.log('Starting contract analysis with Hugging Face models...')
 
-    1. Risk Level: Assess overall risk (low/medium/high/critical)
-    2. Summary: 2-3 sentence overview of the contract
-    3. Key Terms: Important provisions (payment terms, duration, termination)
-    4. Red Flags: Concerning clauses that favor the other party
-    5. Favorable Terms: Clauses that protect our interests
-    6. Recommendations: Specific actions to take
-
-    Focus on practical business implications, not legal theory.
-    Be direct about risks. Use plain English.
-
-    Contract text:
-    ${extractedText}
-
-    Respond in JSON format with keys: riskLevel, summary, keyTerms, redFlags, favorableTerms, recommendations
-    `
-
-    let completion, analysis
+    let analysis
     try {
-      completion = await openai.chat.completions.create({
-        model: 'gpt-4o',
-        messages: [{ role: 'user', content: analysisPrompt }],
-        response_format: { type: 'json_object' },
-        temperature: 0.3, // Lower temperature for more consistent analysis
-        max_tokens: 2000
+      analysis = await contractAnalyzer.analyzeContract(extractedText)
+      console.log('Contract analysis completed successfully')
+
+      // Ensure analysis has all required fields
+      if (!analysis.riskLevel || !analysis.summary) {
+        throw new Error('Incomplete analysis result')
+      }
+
+    } catch (analysisError: any) {
+      console.error('Contract analysis error:', {
+        message: analysisError?.message,
+        stack: analysisError?.stack,
+        error: analysisError
       })
 
-      if (!completion.choices[0]?.message?.content) {
-        throw new Error('No response from OpenAI')
-      }
-
-      analysis = JSON.parse(completion.choices[0].message.content)
-
-      // Validate required fields in analysis
-      const requiredFields = ['riskLevel', 'summary', 'keyTerms', 'redFlags', 'favorableTerms', 'recommendations']
-      for (const field of requiredFields) {
-        if (!(field in analysis)) {
-          throw new Error(`Missing required field in analysis: ${field}`)
-        }
-      }
-
-      // Normalize risk level to lowercase to match database constraint
-      if (analysis.riskLevel) {
-        analysis.riskLevel = analysis.riskLevel.toLowerCase()
-      }
-
-    } catch (openaiError: any) {
-      console.error('OpenAI API error:', openaiError)
-
-      // Provide specific error messages based on the error type
-      let errorMessage = 'Failed to analyze contract with AI. Please try again.'
-      if (openaiError?.status === 401) {
-        errorMessage = 'OpenAI API key is invalid or expired. Please check your API key configuration.'
-      } else if (openaiError?.status === 429) {
-        errorMessage = 'OpenAI API rate limit exceeded. Please try again in a few minutes.'
-      } else if (openaiError?.status === 500) {
-        errorMessage = 'OpenAI service is temporarily unavailable. Please try again later.'
-      }
-
       return NextResponse.json(
-        { error: errorMessage },
+        {
+          error: 'Failed to analyze contract with AI models. Please try again.',
+          details: analysisError?.message || 'Unknown analysis error',
+          timestamp: new Date().toISOString()
+        },
         { status: 500 }
       )
     }
@@ -234,9 +192,18 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Contract analysis error:', error)
+    console.error('Contract analysis error:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      error: error
+    })
+
     return NextResponse.json(
-      { error: 'Failed to analyze contract' },
+      {
+        error: 'Failed to analyze contract',
+        details: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
+      },
       { status: 500 }
     )
   }

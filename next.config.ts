@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
+        path: false,
+        crypto: false,
       };
     }
 
@@ -16,9 +18,18 @@ const nextConfig: NextConfig = {
       use: 'ignore-loader'
     });
 
+    // Optimize for Hugging Face transformers
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@xenova/transformers': '@xenova/transformers/dist/transformers.min.js'
+    };
+
     return config;
   },
-  serverExternalPackages: ['pdf-parse']
+  serverExternalPackages: ['pdf-parse', '@xenova/transformers'],
+  experimental: {
+    serverComponentsExternalPackages: ['@xenova/transformers']
+  }
 };
 
 export default nextConfig;
