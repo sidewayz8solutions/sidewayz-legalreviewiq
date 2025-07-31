@@ -50,9 +50,18 @@ export async function GET() {
     
   } catch (error: any) {
     console.error('OpenAI API test error:', error)
-    
+
     // Provide detailed error information
-    let errorDetails = {
+    let errorDetails: {
+      success: boolean
+      error: string
+      message: any
+      status: any
+      type: any
+      code: any
+      guidance?: string
+      possibleCauses?: string[]
+    } = {
       success: false,
       error: 'OpenAI API call failed',
       message: error.message,
