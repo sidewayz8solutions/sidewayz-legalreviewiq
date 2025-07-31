@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { contractAnalyzer } from '@/lib/contractAnalyzer'
+import pdfParse from 'pdf-parse'
+import mammoth from 'mammoth'
 
 // Force this route to run on Node.js runtime
 export const runtime = 'nodejs'
@@ -54,20 +56,23 @@ export async function POST(request: NextRequest) {
     let contractText: string
     try {
       if (isPdf) {
-        // For now, return an error for PDF files since we need a PDF parser
-        return NextResponse.json(
-          { error: 'PDF processing not yet implemented. Please use a text file or implement PDF parsing.' },
-          { status: 501 }
-        )
+        console.log('Processing PDF file...')
+        const arrayBuffer = await file.arrayBuffer()
+        const buffer = Buffer.from(arrayBuffer)
+        const pdfData = await pdfParse(buffer)
+        contractText = pdfData.text
+        console.log(`Extracted ${contractText.length} characters from PDF`)
       } else if (isDocx) {
-        // For now, return an error for DOCX files since we need a DOCX parser
-        return NextResponse.json(
-          { error: 'DOCX processing not yet implemented. Please use a text file or implement DOCX parsing.' },
-          { status: 501 }
-        )
+        console.log('Processing DOCX file...')
+        const arrayBuffer = await file.arrayBuffer()
+        const buffer = Buffer.from(arrayBuffer)
+        const result = await mammoth.extractRawText({ buffer })
+        contractText = result.value
+        console.log(`Extracted ${contractText.length} characters from DOCX`)
       } else {
         // Fallback to treating as text file
         contractText = await file.text()
+        console.log(`Read ${contractText.length} characters from text file`)
       }
     } catch (error) {
       console.error('File processing error:', error)
