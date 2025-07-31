@@ -29,6 +29,8 @@ class ContractAnalyzer {
   private sentimentAnalyzer: any = null;
   private nerModel: any = null;
   private initialized = false;
+  clauseClassifier: any;
+  legalNER: any;
 
   async initialize() {
     if (this.initialized) return;
@@ -49,7 +51,7 @@ class ContractAnalyzer {
       );
 
       // BEST Legal Summarization Model
-      this.legalSummarizer = await pipeline(
+      this.summarizer = await pipeline(
         'summarization',
         'facebook/bart-large-cnn'
       );
@@ -259,7 +261,7 @@ class ContractAnalyzer {
 
       // Use BEST legal summarization model
       const truncatedText = contractText.substring(0, 1024);
-      const summaryResult = await this.legalSummarizer(truncatedText, {
+      const summaryResult = await this.summarizer(truncatedText, {
         max_length: 200,
         min_length: 80,
         do_sample: false,
@@ -357,7 +359,7 @@ class ContractAnalyzer {
 
         // Advanced risk detection
         if (riskAnalysis[0].label === 'negative' && riskAnalysis[0].score > 0.75) {
-          const entityNames = entities.filter(e => e.entity.includes('PER') || e.entity.includes('ORG')).map(e => e.word);
+          const entityNames = entities.filter((e: { entity: string | string[]; }) => e.entity.includes('PER') || e.entity.includes('ORG')).map((e: { word: any; }) => e.word);
           redFlags.push(`${section.type}: High-risk terms detected (${riskAnalysis[0].score.toFixed(2)} confidence) involving ${entityNames.join(', ') || 'key parties'}`);
         }
 
