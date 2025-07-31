@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
+import { supabaseAdmin, isSupabaseAvailable } from '@/lib/supabase'
 import { contractAnalyzer } from '@/lib/contractAnalyzer'
 
 // Force this route to run on Node.js runtime
@@ -8,6 +8,14 @@ export const runtime = 'nodejs'
 // This function handles the contract analysis
 export async function POST(request: NextRequest) {
   try {
+    // Check if Supabase is available
+    if (!isSupabaseAvailable() || !supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Database service is not available. Please check your Supabase configuration.' },
+        { status: 503 }
+      )
+    }
+
     // Extract the contract text from the uploaded file
     const formData = await request.formData()
     const file = formData.get('file') as File
