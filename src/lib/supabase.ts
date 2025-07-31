@@ -1,50 +1,58 @@
 // src/lib/supabase.ts
+// EMERGENCY FIX - Replace your current supabase.ts with this
+// Fill in your actual values from Supabase dashboard
+
 import { createClient } from '@supabase/supabase-js'
 
-// Check if environment variables are available
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+// GO TO: https://supabase.com/dashboard → Your Project → Settings → API
+// Copy these values EXACTLY (no quotes needed):
+const SUPABASE_URL = 'https://YOUR_PROJECT_REF.supabase.co' // Replace with your Project URL
+const SUPABASE_ANON_KEY = 'your-very-long-anon-key-here' // Replace with anon public key  
+const SUPABASE_SERVICE_KEY = 'your-very-long-service-key-here' // Replace with service_role key
 
-// Validate that we have the required environment variables
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase environment variables are missing!')
-  console.error('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? 'SET' : 'MISSING')
-  console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'SET' : 'MISSING')
+// Fallback to env vars if available (for when you fix the env issue later)
+const supabaseUrl = SUPABASE_URL.includes('YOUR_PROJECT_REF') 
+  ? process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL
+  : SUPABASE_URL
+
+const supabaseAnonKey = SUPABASE_ANON_KEY.includes('your-very-long') 
+  ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY
+  : SUPABASE_ANON_KEY
+
+const supabaseServiceKey = SUPABASE_SERVICE_KEY.includes('your-very-long')
+  ? process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_SERVICE_KEY
+  : SUPABASE_SERVICE_KEY
+
+// Validate we have real values
+if (!supabaseUrl || supabaseUrl.includes('YOUR_PROJECT_REF')) {
+  console.error('❌ SUPABASE_URL not configured! Edit src/lib/supabase.ts')
 }
 
-// For client-side operations - with error handling
-export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null
+if (!supabaseAnonKey || supabaseAnonKey.includes('your-very-long')) {
+  console.error('❌ SUPABASE_ANON_KEY not configured! Edit src/lib/supabase.ts')
+}
 
-// For server-side operations with full access - with error handling
-export const supabaseAdmin = supabaseUrl && supabaseServiceKey
-  ? createClient(supabaseUrl, supabaseServiceKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
-    })
-  : null
+// Create clients - these will work even if env vars fail
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// Helper function to check if Supabase is properly configured
+export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+})
+
+// Helpers
 export const isSupabaseConfigured = () => {
-  return !!(supabase && supabaseAdmin)
+  return supabaseUrl.includes('supabase.co') && !supabaseUrl.includes('YOUR_PROJECT_REF')
 }
 
-// Helper function to get a safe Supabase client
-export const getSupabaseClient = () => {
-  if (!supabase) {
-    throw new Error('Supabase client is not initialized. Please check your environment variables.')
-  }
-  return supabase
-}
+export const getSupabaseClient = () => supabase
+export const getSupabaseAdmin = () => supabaseAdmin
 
-// Helper function to get a safe Supabase admin client
-export const getSupabaseAdmin = () => {
-  if (!supabaseAdmin) {
-    throw new Error('Supabase admin client is not initialized. Please check your environment variables.')
-  }
-  return supabaseAdmin
-}
+// Log status (remove in production)
+console.log('Supabase initialized with:', {
+  url: supabaseUrl.substring(0, 30) + '...',
+  hasAnonKey: !!supabaseAnonKey && supabaseAnonKey.length > 20,
+  hasServiceKey: !!supabaseServiceKey && supabaseServiceKey.length > 20
+})
