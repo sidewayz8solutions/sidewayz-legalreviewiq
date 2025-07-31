@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin, isSupabaseAvailable } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 
 // Mock endpoint that simulates contract analysis without using AI models
 export async function POST(request: NextRequest) {
   try {
     // Check if Supabase is available
-    if (!isSupabaseAvailable() || !supabaseAdmin) {
+    if (!supabaseAdmin) {
       return NextResponse.json(
         { error: 'Database service is not available. Please check your Supabase configuration.' },
         { status: 503 }

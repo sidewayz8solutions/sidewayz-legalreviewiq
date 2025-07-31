@@ -21,7 +21,7 @@ export default function DebugPage() {
     fetch('/api/test-env')
       .then(res => res.json())
       .then(data => {
-        setConfig(prev => ({ ...prev, serverConfig: data }))
+        setConfig((prev: any) => ({ ...prev, serverConfig: data }))
       })
       .catch(err => {
         setError('Failed to fetch server config: ' + err.message)

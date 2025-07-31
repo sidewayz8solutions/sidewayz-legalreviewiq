@@ -1,17 +1,14 @@
 // src/lib/supabase.ts
-// EMERGENCY FIX - Replace your current supabase.ts with this
-// Fill in your actual values from Supabase dashboard
-
 import { createClient } from '@supabase/supabase-js'
 
 // GO TO: https://supabase.com/dashboard → Your Project → Settings → API
 // Copy these values EXACTLY (no quotes needed):
-const SUPABASE_URL = 'https://YOUR_PROJECT_REF.supabase.co' // Replace with your Project URL
-const SUPABASE_ANON_KEY = 'your-very-long-anon-key-here' // Replace with anon public key  
-const SUPABASE_SERVICE_KEY = 'your-very-long-service-key-here' // Replace with service_role key
+const SUPABASE_URL = 'https://qunaiicjcelvdunluwqh.supabase.co' // Replace with your Project URL
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1bmFpaWNqY2VsdmR1bmx1d3FoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM3NjA4NjEsImV4cCI6MjA2OTMzNjg2MX0.rFXwY95lvcXZEds7f16KodwhfnGHQBp7GsV4WTFQHjI' 
+const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1bmFpaWNqY2VsdmR1bmx1d3FoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Mzc2MDg2MSwiZXhwIjoyMDY5MzM2ODYxfQ.8Ugafib74_1btlN5acUz3rX2U4JyjHGWmSFsQthENMA' 
 
 // Fallback to env vars if available (for when you fix the env issue later)
-const supabaseUrl = SUPABASE_URL.includes('YOUR_PROJECT_REF') 
+const supabaseUrl = SUPABASE_URL.includes('qunaiicjcelvdunluwqh') 
   ? process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL
   : SUPABASE_URL
 
@@ -24,7 +21,7 @@ const supabaseServiceKey = SUPABASE_SERVICE_KEY.includes('your-very-long')
   : SUPABASE_SERVICE_KEY
 
 // Validate we have real values
-if (!supabaseUrl || supabaseUrl.includes('YOUR_PROJECT_REF')) {
+if (!supabaseUrl || supabaseUrl.includes('qunaiicjcelvdunluwqh')) {
   console.error('❌ SUPABASE_URL not configured! Edit src/lib/supabase.ts')
 }
 
@@ -44,7 +41,7 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
 
 // Helpers
 export const isSupabaseConfigured = () => {
-  return supabaseUrl.includes('supabase.co') && !supabaseUrl.includes('YOUR_PROJECT_REF')
+  return supabaseUrl.includes('supabase.co') && !supabaseUrl.includes('qunaiicjcelvdunluwqh')
 }
 
 export const getSupabaseClient = () => supabase
