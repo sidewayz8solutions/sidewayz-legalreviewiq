@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
+// Force this route to run on Node.js runtime
+export const runtime = 'nodejs'
+
 export async function GET() {
   try {
     const apiKey = process.env.OPENAI_API_KEY

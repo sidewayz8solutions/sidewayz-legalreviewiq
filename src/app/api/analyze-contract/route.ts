@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import OpenAI from 'openai'
 
+// Force this route to run on Node.js runtime
+export const runtime = 'nodejs'
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!
 })
