@@ -1,11 +1,21 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import { Upload, FileText, AlertCircle, ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import toast from 'react-hot-toast'
-import styles from './upload.module.css'
+import {
+  useRef,
+  useState,
+} from 'react';
+
+import {
+  AlertCircle,
+  ArrowLeft,
+  FileText,
+  Upload,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+
+import styles from './upload.module.css';
 
 export default function UploadContract() {
   const router = useRouter()
@@ -71,7 +81,7 @@ export default function UploadContract() {
     const formData = new FormData()
     formData.append('file', file)
     // Use proper UUIDs for demo - in production, get these from auth context
-    formData.append('userId', '550e8400-e29b-41d4-a716-446655440000')
+    // Skip userId for now since it requires Supabase Auth setup
     formData.append('organizationId', '550e8400-e29b-41d4-a716-446655440001')
 
     try {

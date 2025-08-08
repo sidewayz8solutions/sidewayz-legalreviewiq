@@ -1,0 +1,55 @@
+SERVICE AGREEMENT
+
+This Service Agreement ("Agreement") is entered into on [DATE] between:
+
+CLIENT: [Client Name]
+Address: [Client Address]
+
+SERVICE PROVIDER: [Provider Name] 
+Address: [Provider Address]
+
+1. SERVICES
+The Service Provider agrees to provide the following services:
+- Web development and maintenance
+- Technical support and consultation
+- Monthly performance reports
+
+2. PAYMENT TERMS
+- Total contract value: $10,000
+- Payment schedule: 50% upfront, 50% upon completion
+- Late payment fee: 1.5% per month
+- All payments due within 30 days of invoice
+
+3. TERM AND TERMINATION
+- Contract term: 6 months from effective date
+- Either party may terminate with 30 days written notice
+- Client may terminate immediately for breach of contract
+- Upon termination, all work product becomes property of Client
+
+4. INTELLECTUAL PROPERTY
+- All work created under this agreement belongs to Client
+- Service Provider retains rights to general methodologies
+- Client grants license to use their trademarks for portfolio purposes
+
+5. CONFIDENTIALITY
+- Both parties agree to maintain confidentiality of proprietary information
+- Confidentiality obligations survive termination of this agreement
+- Exceptions: publicly available information, independently developed
+
+6. LIABILITY AND WARRANTIES
+- Service Provider warrants services will be performed professionally
+- Total liability limited to contract value
+- No warranties for third-party software or services
+- Client responsible for backup of their data
+
+7. FORCE MAJEURE
+Neither party liable for delays due to circumstances beyond reasonable control.
+
+8. GOVERNING LAW
+This agreement governed by laws of [State/Province].
+
+By signing below, both parties agree to the terms of this Service Agreement.
+
+CLIENT: _________________________ DATE: _________
+
+SERVICE PROVIDER: _________________ DATE: _________

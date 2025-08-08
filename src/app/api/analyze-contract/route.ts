@@ -1,9 +1,13 @@
+import mammoth from 'mammoth';
 // src/app/api/analyze-contract/route.ts
-import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
-import { contractAnalyzer } from '@/lib/contractAnalyzer'
-import pdfParse from 'pdf-parse'
-import mammoth from 'mammoth'
+import {
+  NextRequest,
+  NextResponse,
+} from 'next/server';
+import pdfParse from 'pdf-parse';
+
+import { contractAnalyzer } from '@/lib/contractAnalyzer';
+import { supabaseAdmin } from '@/lib/supabase';
 
 // Force this route to run on Node.js runtime for file processing
 export const runtime = 'nodejs'
@@ -141,17 +145,11 @@ export async function POST(request: NextRequest) {
       .from('contracts')
       .insert({
         organization_id: organizationId,
-        user_id: userId || null,
-        filename: file.name,
+        uploaded_by: userId || null,
+        file_name: file.name,
+        file_url: '',
         file_size: file.size,
-        content: contractText.substring(0, 50000), // Store first 50k chars max
-        word_count: wordCount,
-        status: 'processing',
-        uploaded_at: new Date().toISOString(),
-        metadata: {
-          file_type: file.type,
-          extraction_warning: extractionError
-        }
+        status: 'processing'
       })
       .select()
       .single()
